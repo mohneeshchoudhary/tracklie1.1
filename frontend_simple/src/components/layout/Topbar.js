@@ -6,32 +6,43 @@ class Topbar {
   constructor(config = {}) {
     this.config = {
       user: {
-        name: 'Admin User',
-        role: 'ADMIN'
+        name: 'Guest',
+        role: null
       },
       pageTitle: 'Dashboard',
-      welcomeMessage: 'Welcome back! Here\'s what\'s happening today.',
+      welcomeMessage: 'Welcome! Please login to access features.',
       actions: [
         {
           id: 'checkin',
           text: 'Check In',
           icon: 'checkin',
           variant: 'danger',
-          onClick: this.handleCheckIn.bind(this)
+          onClick: this.handleCheckIn.bind(this),
+          requiresAuth: true
         },
         {
           id: 'addlead',
           text: 'Add Lead',
           icon: 'add',
           variant: 'primary',
-          onClick: this.handleAddLead.bind(this)
+          onClick: this.handleAddLead.bind(this),
+          requiresAuth: true
         },
         {
           id: 'logout',
           text: 'Logout',
           icon: 'logout',
           variant: 'secondary',
-          onClick: this.handleLogout.bind(this)
+          onClick: this.handleLogout.bind(this),
+          requiresAuth: true
+        },
+        {
+          id: 'login',
+          text: 'Login',
+          icon: 'login',
+          variant: 'primary',
+          onClick: this.handleLogin.bind(this),
+          requiresAuth: false
         }
       ],
       ...config
@@ -39,6 +50,7 @@ class Topbar {
     
     this.element = null;
     this.init();
+    this.setupAuthListener();
   }
   
   init() {
@@ -119,13 +131,22 @@ class Topbar {
   }
   
   handleAddLead() {
-    // Placeholder for add lead functionality
-    alert('Add Lead functionality coming in Stage 3 (Lead Management)');
+    // Check authentication before allowing add lead
+    if (!window.AuthContext.requireAuth()) {
+      return;
+    }
+    window.AuthContext.showToast('Add Lead functionality coming in Stage 3 (Lead Management)', 'info');
   }
   
+  handleLogin() {
+    // Show login modal
+    window.AuthContext.showLoginModal();
+  }
+
   handleLogout() {
-    // Placeholder for logout functionality
-    alert('Logout functionality coming in Stage 2 (Authentication)');
+    // Logout functionality
+    window.AuthContext.logout();
+    window.AuthContext.showToast('Logged out successfully', 'success');
   }
   
   updatePageTitle(title) {
@@ -144,6 +165,57 @@ class Topbar {
     }
   }
   
+  setupAuthListener() {
+    // Listen for auth state changes
+    if (window.AuthContext) {
+      // Set initial auth state
+      const initialAuthState = window.AuthContext.getState();
+      this.updateAuthState(initialAuthState);
+      
+      // Listen for future changes
+      window.AuthContext.addListener((authState) => {
+        this.updateAuthState(authState);
+      });
+    } else {
+      // AuthContext not ready yet, wait for it
+      setTimeout(() => this.setupAuthListener(), 100);
+    }
+  }
+
+  updateAuthState(authState) {
+    // Update user info
+    if (authState.isAuthenticated && authState.user) {
+      this.config.user = authState.user;
+      this.config.welcomeMessage = `Welcome back, ${authState.user.name}! Here's what's happening today.`;
+    } else {
+      this.config.user = { name: 'Guest', role: null };
+      this.config.welcomeMessage = 'Welcome! Please login to access features.';
+    }
+
+    // Update welcome message
+    this.updateWelcomeMessage(this.config.welcomeMessage);
+
+    // Update action buttons visibility
+    this.updateActionButtons(authState.isAuthenticated);
+  }
+
+  updateActionButtons(isAuthenticated) {
+    const actionsContainer = this.element.querySelector('.topbar__actions');
+    if (!actionsContainer) return;
+
+    // Clear existing buttons
+    actionsContainer.innerHTML = '';
+
+    // Add appropriate buttons based on auth state
+    this.config.actions.forEach(action => {
+      const shouldShow = isAuthenticated ? action.requiresAuth : !action.requiresAuth;
+      if (shouldShow) {
+        const button = this.createActionButton(action);
+        actionsContainer.appendChild(button);
+      }
+    });
+  }
+
   attachEventListeners() {
     // Listen for page changes to update title
     window.addEventListener('hashchange', () => {

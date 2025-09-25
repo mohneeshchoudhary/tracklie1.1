@@ -38,6 +38,9 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  flex-wrap: wrap;
+  max-width: 100%;
+  overflow: visible;
 }
 
 .topbar__button {
@@ -112,6 +115,11 @@
 
 .topbar__button-icon--logout::before {
   content: '🚪';
+  font-size: 14px;
+}
+
+.topbar__button-icon--login::before {
+  content: '🔑';
   font-size: 14px;
 }
 

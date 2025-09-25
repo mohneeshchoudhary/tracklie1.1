@@ -6,12 +6,13 @@
 // Application state
 const AppState = {
   user: {
-    name: 'Admin User',
-    role: 'ADMIN',
-    avatar: 'A'
+    name: 'Guest',
+    role: null,
+    avatar: 'G'
   },
   currentPage: 'dashboard',
-  isInitialized: false
+  isInitialized: false,
+  isAuthenticated: false
 };
 
 // Main application class
@@ -21,10 +22,39 @@ class TracklieApp {
     this.init();
   }
   
-  init() {
+  async init() {
+    await this.initializeAuth();
     this.initializeApp();
     this.setupGlobalEventListeners();
     AppState.isInitialized = true;
+  }
+
+  async initializeAuth() {
+    // Wait for auth context to be available
+    while (!window.AuthContext) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    
+    // Wait for auth initialization to complete
+    while (window.AuthContext.isLoading) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    
+    // Update app state with auth state
+    const authState = window.AuthContext.getState();
+    AppState.isAuthenticated = authState.isAuthenticated;
+    AppState.user = authState.user || { name: 'Guest', role: null, avatar: 'G' };
+    
+    // Listen for auth state changes
+    window.AuthContext.addListener((authState) => {
+      AppState.isAuthenticated = authState.isAuthenticated;
+      AppState.user = authState.user || { name: 'Guest', role: null, avatar: 'G' };
+      
+      // Update main layout if it exists
+      if (this.mainLayout) {
+        this.mainLayout.updateUserInfo(AppState.user);
+      }
+    });
   }
   
   initializeApp() {
