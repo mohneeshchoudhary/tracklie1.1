@@ -34,30 +34,39 @@ class TestBasicNavigation:
     def test_homepage_redirects_to_dashboard(self, driver):
         """Test that homepage redirects to dashboard"""
         driver.get(self.BASE_URL)
-        time.sleep(2)  # Wait for redirect
+        time.sleep(3)  # Wait for JavaScript to load and redirect
         
         # Should redirect to /dashboard
         assert "dashboard" in driver.current_url
         
-        # Should display Tracklie title
-        title_element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "h1"))
+        # Check for main layout structure
+        main_layout = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='main-layout']"))
         )
-        assert "Tracklie CRM" in title_element.text
+        assert main_layout.is_displayed()
+        
+        # Check for sidebar
+        sidebar = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='sidebar']"))
+        )
+        assert sidebar.is_displayed()
     
     def test_dashboard_page_loads(self, driver):
         """Test that dashboard page loads correctly"""
         driver.get(f"{self.BASE_URL}/#dashboard")
+        time.sleep(2)  # Wait for JavaScript routing
         
-        # Check for dashboard heading
-        dashboard_heading = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//h2[contains(text(), 'Dashboard')]"))
+        # Check for dashboard page placeholder
+        dashboard_page = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='page-dashboard']"))
         )
-        assert dashboard_heading.is_displayed()
+        assert dashboard_page.is_displayed()
         
-        # Check for status badges (CSS theme test)
-        status_badges = driver.find_elements(By.CLASS_NAME, "status-badge")
-        assert len(status_badges) >= 4  # Should have New, In Progress, Hot Lead, Converted
+        # Check for dashboard title
+        dashboard_title = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//h1[contains(text(), 'Dashboard')]"))
+        )
+        assert dashboard_title.is_displayed()
     
     def test_navigation_links_work(self, driver):
         """Test that all navigation links work"""
@@ -81,38 +90,61 @@ class TestBasicNavigation:
     def test_css_theme_loads(self, driver):
         """Test that custom CSS theme is loaded correctly"""
         driver.get(f"{self.BASE_URL}/#dashboard")
+        time.sleep(2)  # Wait for JavaScript routing
         
-        # Check if primary button has correct styling
-        primary_button = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "btn--primary"))
+        # Check if sidebar has correct styling
+        sidebar = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='sidebar']"))
         )
         
-        # Get computed background color (should be purple)
-        bg_color = primary_button.value_of_css_property('background-color')
-        # RGB value for #735DFF should be roughly rgb(115, 93, 255)
+        # Get computed background color (should be dark)
+        bg_color = sidebar.value_of_css_property('background-color')
         assert "rgb" in bg_color.lower()
+        
+        # Check if topbar is present
+        topbar = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='topbar']"))
+        )
+        assert topbar.is_displayed()
     
     def test_responsive_container(self, driver):
-        """Test that container class works"""
+        """Test that main layout container works"""
         driver.get(f"{self.BASE_URL}/#dashboard")
+        time.sleep(2)  # Wait for JavaScript routing
         
-        container = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "container"))
+        # Check for main layout container
+        main_layout = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='main-layout']"))
         )
-        assert container.is_displayed()
+        assert main_layout.is_displayed()
+        
+        # Check for page container
+        page_container = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='page-container']"))
+        )
+        assert page_container.is_displayed()
     
     def test_card_components_render(self, driver):
-        """Test that card components render with proper styling"""
+        """Test that page placeholder components render with proper styling"""
         driver.get(f"{self.BASE_URL}/#dashboard")
+        time.sleep(2)  # Wait for JavaScript routing
         
-        cards = driver.find_elements(By.CLASS_NAME, "card")
-        assert len(cards) >= 1
+        # Check for page placeholder
+        page_placeholder = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-testid='page-dashboard']"))
+        )
+        assert page_placeholder.is_displayed()
         
-        # Check that card has proper dark theme styling
-        card = cards[0]
-        bg_color = card.value_of_css_property('background-color')
-        # Should have dark background
-        assert bg_color != "rgba(0, 0, 0, 0)"  # Not transparent
+        # Check for feature cards
+        feature_cards = driver.find_elements(By.CLASS_NAME, "page-placeholder__feature")
+        assert len(feature_cards) >= 1
+        
+        # Check that feature card has proper dark theme styling
+        if feature_cards:
+            card = feature_cards[0]
+            bg_color = card.value_of_css_property('background-color')
+            # Should have dark background
+            assert bg_color != "rgba(0, 0, 0, 0)"  # Not transparent
 
 
 if __name__ == "__main__":

@@ -1,0 +1,157 @@
+/* NavItem Component Styles */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item:hover {
+  background-color: var(--color-background-card);
+  color: var(--color-text-primary);
+  transform: translateX(4px);
+}
+
+.nav-item--active {
+  background-color: var(--color-sidebar-active);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.nav-item--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--color-primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* Icon */
+.nav-item__icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Text */
+.nav-item__text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badge */
+.nav-item__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--spacing-xs);
+  background-color: var(--color-orange);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-full);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nav-item__badge--hidden {
+  display: none;
+}
+
+/* Icon Variations */
+.nav-item__icon--dashboard::before {
+  content: '📊';
+}
+
+.nav-item__icon--leads::before {
+  content: '👥';
+}
+
+.nav-item__icon--followups::before {
+  content: '📞';
+}
+
+.nav-item__icon--payments::before {
+  content: '💰';
+}
+
+.nav-item__icon--reports::before {
+  content: '📈';
+}
+
+.nav-item__icon--deals::before {
+  content: '💼';
+}
+
+.nav-item__icon--recovery::before {
+  content: '🔔';
+}
+
+.nav-item__icon--products::before {
+  content: '📦';
+}
+
+.nav-item__icon--analytics::before {
+  content: '📊';
+}
+
+.nav-item__icon--distribution::before {
+  content: '🎯';
+}
+
+/* Animation for active state */
+.nav-item--active .nav-item__icon {
+  transform: scale(1.1);
+}
+
+.nav-item--active .nav-item__text {
+  transform: translateX(2px);
+}
+
+/* Focus styles for accessibility */
+.nav-item:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Loading state */
+.nav-item--loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.nav-item--loading .nav-item__icon::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-primary);
+  border-top: 2px solid transparent;
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

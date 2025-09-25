@@ -1,0 +1,104 @@
+/* Tracklie CRM - CSS Variables & Design System */
+:root {
+  /* Brand Colors */
+  --color-primary: #735DFF;
+  --color-primary-hover: #6A4DFF;
+  --color-primary-light: #8B7AFF;
+  --color-primary-dark: #5A4BCC;
+  
+  /* Background Colors */
+  --color-background: #0D0F1C;
+  --color-background-light: #1A1A2E;
+  --color-background-card: #1C1C29;
+  --color-sidebar: #0D0F1C;
+  --color-sidebar-active: #2D2C54;
+  --color-topbar: #0D0F1C;
+  
+  /* Text Colors */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B5B5B5;
+  --color-text-muted: #8B8B8B;
+  --color-text-accent: #735DFF;
+  
+  /* Status Colors */
+  --color-success: #28C76F;
+  --color-warning: #FFC107;
+  --color-error: #EA5455;
+  --color-info: #00CFE8;
+  
+  /* Accent Colors */
+  --color-orange: #FF9F43;
+  --color-teal: #00CFE8;
+  --color-yellow: #FFC107;
+  --color-red: #EA5455;
+  --color-green: #28C76F;
+  
+  /* Border & Divider */
+  --color-border: #1C1C29;
+  --color-divider: #2D2C54;
+  
+  /* Spacing System */
+  --spacing-xs: 0.25rem;   /* 4px */
+  --spacing-sm: 0.5rem;    /* 8px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 1.5rem;    /* 24px */
+  --spacing-xl: 2rem;      /* 32px */
+  --spacing-2xl: 3rem;     /* 48px */
+  --spacing-3xl: 4rem;     /* 64px */
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+  
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+  
+  /* Layout Dimensions */
+  --sidebar-width: 280px;
+  --topbar-height: 80px;
+  --content-padding: var(--spacing-lg);
+}
