@@ -22,9 +22,11 @@
 }
 
 .nav-item--active {
-  background-color: var(--color-sidebar-active);
+  background: var(--gradient-card-hover);
   color: var(--color-text-primary);
   font-weight: var(--font-weight-semibold);
+  box-shadow: var(--shadow-glow);
+  border: 1px solid rgba(115, 93, 255, 0.3);
 }
 
 .nav-item--active::before {
@@ -33,9 +35,10 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 3px;
-  background-color: var(--color-primary);
+  width: 4px;
+  background: var(--gradient-primary);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  box-shadow: 0 0 10px rgba(115, 93, 255, 0.5);
 }
 
 /* Icon */

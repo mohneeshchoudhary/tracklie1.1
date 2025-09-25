@@ -102,6 +102,31 @@
   box-shadow: var(--shadow-lg);
 }
 
+/* Gradient card styles */
+.gradient-card {
+  background: var(--gradient-card);
+  border: 1px solid rgba(115, 93, 255, 0.2);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  transition: all var(--transition-normal);
+}
+
+.gradient-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--color-primary);
+  background: var(--gradient-card-hover);
+}
+
+/* Glow effects */
+.glow-primary {
+  box-shadow: var(--shadow-glow);
+}
+
+.glow-primary:hover {
+  box-shadow: var(--shadow-glow-hover);
+}
+
 /* Text utilities */
 .text-primary { color: var(--color-text-primary); }
 .text-secondary { color: var(--color-text-secondary); }

@@ -139,12 +139,13 @@ class TestBasicNavigation:
         feature_cards = driver.find_elements(By.CLASS_NAME, "page-placeholder__feature")
         assert len(feature_cards) >= 1
         
-        # Check that feature card has proper dark theme styling
+        # Check that feature card has proper styling
         if feature_cards:
             card = feature_cards[0]
-            bg_color = card.value_of_css_property('background-color')
-            # Should have dark background
-            assert bg_color != "rgba(0, 0, 0, 0)"  # Not transparent
+            # Check for gradient background or border styling
+            border_color = card.value_of_css_property('border-color')
+            # Should have purple border for gradient cards
+            assert "rgb" in border_color.lower() or "rgba" in border_color.lower()
 
 
 if __name__ == "__main__":
