@@ -1,0 +1,239 @@
+/* Tracklie CRM - Global Styles with BEM Methodology */
+
+/* CSS Custom Properties (Variables) */
+:root {
+  /* Tracklie Color Palette */
+  --color-primary: #735DFF;
+  --color-primary-hover: #6A4DFF;
+  --color-background: #0D0F1C;
+  --color-sidebar-active: #2D2C54;
+  --color-success: #28C76F;
+  --color-warning: #FFC107;
+  --color-error: #FF4D4F;
+  --color-highlight: #00E4FF;
+  
+  /* Text Colors */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B5B5B5;
+  
+  /* UI Colors */
+  --color-border: #1C1C29;
+  --color-hover: #2D2C54;
+  
+  /* Status Colors */
+  --color-status-new: #0000FF;
+  --color-status-in-progress: #FFD700;
+  --color-status-cnp: #808080;
+  --color-status-interested-3: #FFA500;
+  --color-status-interested-4: #28C76F;
+  --color-status-converted: #006400;
+  --color-status-dropped: #FF4D4F;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-xxl: 1.5rem;
+  
+  /* Border Radius */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: var(--font-size-xxl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+
+p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  margin-right: var(--spacing-md);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  margin-right: var(--spacing-sm);
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn--success {
+  background-color: var(--color-success);
+  color: var(--color-text-primary);
+}
+
+.btn--warning {
+  background-color: var(--color-warning);
+  color: var(--color-background);
+}
+
+.btn--error {
+  background-color: var(--color-error);
+  color: var(--color-text-primary);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: var(--spacing-sm);
+}
+
+.status-badge--new { 
+  background-color: var(--color-status-new); 
+  color: var(--color-text-primary);
+}
+.status-badge--in-progress { 
+  background-color: var(--color-status-in-progress); 
+  color: var(--color-background); 
+}
+.status-badge--cnp { 
+  background-color: var(--color-status-cnp); 
+  color: var(--color-text-primary);
+}
+.status-badge--interested-3 { 
+  background-color: var(--color-status-interested-3); 
+  color: var(--color-background); 
+}
+.status-badge--interested-4 { 
+  background-color: var(--color-status-interested-4); 
+  color: var(--color-text-primary);
+}
+.status-badge--converted { 
+  background-color: var(--color-status-converted); 
+  color: var(--color-text-primary);
+}
+.status-badge--dropped { 
+  background-color: var(--color-status-dropped); 
+  color: var(--color-text-primary);
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-2 { margin-top: var(--spacing-md); }
+.mb-2 { margin-bottom: var(--spacing-md); }
+.p-2 { padding: var(--spacing-md); }
+
+/* Dark Theme Components */
+.card {
+  background-color: var(--color-sidebar-active);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.nav-bar {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--spacing-xl);
+  background-color: var(--color-background);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}

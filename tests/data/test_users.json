@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "email": "admin@tracklie.com",
+    "name": "Admin User",
+    "role": "Admin",
+    "password": "admin123",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "email": "sales1@tracklie.com",
+    "name": "Ravi Kumar",
+    "role": "Salesperson",
+    "password": "sales123",
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "email": "sales2@tracklie.com",
+    "name": "Priya Sharma",
+    "role": "Salesperson",
+    "password": "sales123",
+    "status": "active"
+  },
+  {
+    "id": 4,
+    "email": "manager@tracklie.com",
+    "name": "Aniket Singh",
+    "role": "Team Lead",
+    "password": "manager123",
+    "status": "active"
+  },
+  {
+    "id": 5,
+    "email": "recovery@tracklie.com",
+    "name": "Deepa Kumari",
+    "role": "Recovery Agent",
+    "password": "recovery123",
+    "status": "active"
+  }
+]
