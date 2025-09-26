@@ -62,23 +62,26 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
+    margin-top: 4px;
 }
 
 .interest-control__option {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 10px 12px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+    font-size: 14px;
 }
 
 .interest-control__option:last-child {
@@ -86,7 +89,7 @@
 }
 
 .interest-control__option:hover {
-    background-color: var(--bg-hover);
+    background-color: #f3f4f6;
 }
 
 .interest-control__loading {

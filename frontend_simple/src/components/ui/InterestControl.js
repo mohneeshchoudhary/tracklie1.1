@@ -30,6 +30,9 @@ class InterestControl {
         const display = this.createInterestDisplay();
         this.element.appendChild(display);
         
+        // Add click-outside-to-close functionality
+        this.addClickOutsideListener();
+        
         return this.element;
     }
 
@@ -85,6 +88,18 @@ class InterestControl {
             <span class="interest-control__label">${label}</span>
             <span class="interest-control__arrow">▼</span>
         `;
+    }
+
+    addClickOutsideListener() {
+        // Add click outside listener to close dropdown
+        document.addEventListener('click', (event) => {
+            if (this.element && !this.element.contains(event.target)) {
+                const dropdown = this.element.querySelector('.interest-control__dropdown');
+                if (dropdown && dropdown.style.display !== 'none') {
+                    dropdown.style.display = 'none';
+                }
+            }
+        });
     }
 
     toggleDropdown() {

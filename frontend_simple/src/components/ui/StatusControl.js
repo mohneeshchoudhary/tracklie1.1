@@ -24,6 +24,9 @@ class StatusControl {
         const dropdown = this.createStatusDropdown();
         this.element.appendChild(dropdown);
         
+        // Add click-outside-to-close functionality
+        this.addClickOutsideListener();
+        
         return this.element;
     }
 
@@ -98,6 +101,18 @@ class StatusControl {
             </span>
             <span class="status-control__arrow">▼</span>
         `;
+    }
+
+    addClickOutsideListener() {
+        // Add click outside listener to close dropdown
+        document.addEventListener('click', (event) => {
+            if (this.element && !this.element.contains(event.target)) {
+                const dropdown = this.element.querySelector('.status-control__dropdown');
+                if (dropdown && dropdown.style.display !== 'none') {
+                    dropdown.style.display = 'none';
+                }
+            }
+        });
     }
 
     toggleDropdown() {
