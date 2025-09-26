@@ -51,7 +51,10 @@
 }
 
 .status-control__dropdown {
-    position: fixed;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     background: #ffffff;
     border: 2px solid var(--primary-color);
     border-radius: 8px;
@@ -59,6 +62,7 @@
     z-index: 99999;
     max-height: 200px;
     overflow-y: auto;
+    margin-top: 4px;
     min-width: 150px;
 }
 
@@ -73,6 +77,7 @@
     color: #374151;
     font-size: 14px;
     font-weight: 500;
+    font-family: inherit;
 }
 
 .status-control__option:last-child {
