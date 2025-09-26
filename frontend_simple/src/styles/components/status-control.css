@@ -1,0 +1,97 @@
+/**
+ * Status Control Component Styles
+ */
+.status-control {
+    position: relative;
+    display: inline-block;
+}
+
+.status-control__container {
+    position: relative;
+}
+
+.status-control__current {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+}
+
+.status-control__current:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.status-control__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-control__arrow {
+    font-size: 10px;
+    color: var(--text-secondary);
+    transition: transform 0.2s ease;
+}
+
+.status-control__current:hover .status-control__arrow {
+    transform: rotate(180deg);
+}
+
+.status-control__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.status-control__option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.status-control__option:last-child {
+    border-bottom: none;
+}
+
+.status-control__option:hover {
+    background-color: var(--bg-hover);
+}
+
+.status-control__loading {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Status-specific colors */
+.status-control__badge[style*="#0000FF"] { background-color: #0000FF !important; }
+.status-control__badge[style*="#FFD700"] { background-color: #FFD700 !important; color: #000; }
+.status-control__badge[style*="#808080"] { background-color: #808080 !important; }
+.status-control__badge[style*="#28C76F"] { background-color: #28C76F !important; }
+.status-control__badge[style*="#1E90FF"] { background-color: #1E90FF !important; }
+.status-control__badge[style*="#006400"] { background-color: #006400 !important; }
+.status-control__badge[style*="#FF4D4F"] { background-color: #FF4D4F !important; }

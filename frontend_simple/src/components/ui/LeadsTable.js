@@ -56,6 +56,7 @@ class LeadsTable {
             { key: 'name', label: 'Name', sortable: true },
             { key: 'phone', label: 'Phone', sortable: true },
             { key: 'status', label: 'Status', sortable: true },
+            { key: 'interest', label: 'Interest', sortable: false },
             { key: 'assignedTo', label: 'Assigned To', sortable: true },
             { key: 'lastUpdated', label: 'Last Updated', sortable: true },
             { key: 'actions', label: 'Actions', sortable: false }
@@ -103,7 +104,7 @@ class LeadsTable {
             
             const emptyCell = document.createElement('td');
             emptyCell.className = 'leads-table__empty-cell';
-            emptyCell.colSpan = 5;
+            emptyCell.colSpan = 7;
             emptyCell.setAttribute('data-testid', 'table-empty');
             
             const emptyState = new window.EmptyState({
@@ -142,18 +143,31 @@ class LeadsTable {
         phoneCell.className = 'leads-table__cell leads-table__cell--phone';
         phoneCell.textContent = this.maskPhone(lead.phone);
         
-        // Status cell
+        // Status cell with Stage 6 StatusControl
         const statusCell = document.createElement('td');
         statusCell.className = 'leads-table__cell leads-table__cell--status';
         
-        const statusBadge = new window.StatusBadge({
-            type: this.getStatusType(lead.status),
-            label: this.getStatusLabel(lead.status),
-            size: 'small'
+        const statusControl = new window.StatusControl({
+            lead: lead,
+            onStatusChange: (lead, newStatus) => {
+                this.config.onStatusChange && this.config.onStatusChange(lead, newStatus);
+            }
         });
         
-        statusCell.appendChild(statusBadge.render());
-        this.statusBadges.set(lead.id, statusBadge);
+        statusCell.appendChild(statusControl.render());
+        
+        // Interest cell with Stage 6 InterestControl
+        const interestCell = document.createElement('td');
+        interestCell.className = 'leads-table__cell leads-table__cell--interest';
+        
+        const interestControl = new window.InterestControl({
+            lead: lead,
+            onInterestChange: (lead, newLevel) => {
+                this.config.onInterestChange && this.config.onInterestChange(lead, newLevel);
+            }
+        });
+        
+        interestCell.appendChild(interestControl.render());
         
         // Assigned To cell
         const assignedCell = document.createElement('td');
@@ -165,41 +179,30 @@ class LeadsTable {
         updatedCell.className = 'leads-table__cell leads-table__cell--updated';
         updatedCell.textContent = this.formatRelativeTime(lead.lastUpdated);
         
-        // Actions cell
+        // Actions cell with Stage 6 ActionButtons
         const actionsCell = document.createElement('td');
         actionsCell.className = 'leads-table__cell leads-table__cell--actions';
         
-        const actionsContainer = document.createElement('div');
-        actionsContainer.className = 'leads-table__actions';
-        
-        // Edit button
-        const editBtn = document.createElement('button');
-        editBtn.className = 'leads-table__action-btn leads-table__action-btn--edit';
-        editBtn.innerHTML = '✏️';
-        editBtn.title = 'Edit Lead';
-        editBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.config.onEditLead && this.config.onEditLead(lead);
+        const actionButtons = new window.ActionButtons({
+            lead: lead,
+            onCNP: (lead, reason) => {
+                this.config.onCNP && this.config.onCNP(lead, reason);
+            },
+            onConvert: (lead, data) => {
+                this.config.onConvert && this.config.onConvert(lead, data);
+            },
+            onDrop: (lead, data) => {
+                this.config.onDrop && this.config.onDrop(lead, data);
+            }
         });
         
-        // Delete button
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'leads-table__action-btn leads-table__action-btn--delete';
-        deleteBtn.innerHTML = '🗑️';
-        deleteBtn.title = 'Delete Lead';
-        deleteBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.config.onDeleteLead && this.config.onDeleteLead(lead.id);
-        });
-        
-        actionsContainer.appendChild(editBtn);
-        actionsContainer.appendChild(deleteBtn);
-        actionsCell.appendChild(actionsContainer);
+        actionsCell.appendChild(actionButtons.render());
         
         // Assemble row
         row.appendChild(nameCell);
         row.appendChild(phoneCell);
         row.appendChild(statusCell);
+        row.appendChild(interestCell);
         row.appendChild(assignedCell);
         row.appendChild(updatedCell);
         row.appendChild(actionsCell);

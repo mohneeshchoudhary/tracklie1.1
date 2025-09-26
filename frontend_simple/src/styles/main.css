@@ -25,6 +25,10 @@
 @import './components/lead-modal.css';
 @import './components/login-modal.css';
 @import './components/toast.css';
+/* Stage 6 Components */
+@import './components/status-control.css';
+@import './components/interest-control.css';
+@import './components/action-buttons.css';
 
 /* 5. Page Components */
 @import './pages/home.css';

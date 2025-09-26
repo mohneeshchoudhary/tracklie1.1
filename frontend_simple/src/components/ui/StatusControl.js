@@ -1,0 +1,226 @@
+/**
+ * Status Control Component for Stage 6
+ * Inline status dropdown with confirmation
+ */
+class StatusControl {
+    constructor(config = {}) {
+        this.config = {
+            lead: config.lead || null,
+            onStatusChange: config.onStatusChange || (() => {}),
+            ...config
+        };
+        
+        this.element = null;
+        this.isChanging = false;
+    }
+
+    createElement() {
+        this.element = document.createElement('div');
+        this.element.className = 'status-control';
+        this.element.setAttribute('data-testid', 'status-control');
+        
+        // Create status dropdown
+        const dropdown = this.createStatusDropdown();
+        this.element.appendChild(dropdown);
+        
+        return this.element;
+    }
+
+    createStatusDropdown() {
+        const container = document.createElement('div');
+        container.className = 'status-control__container';
+        
+        // Current status display
+        const currentStatus = document.createElement('div');
+        currentStatus.className = 'status-control__current';
+        currentStatus.innerHTML = this.getStatusDisplay(this.config.lead.status);
+        currentStatus.addEventListener('click', () => this.toggleDropdown());
+        
+        // Dropdown menu
+        const dropdown = document.createElement('div');
+        dropdown.className = 'status-control__dropdown';
+        dropdown.style.display = 'none';
+        
+        const statusOptions = this.getStatusOptions();
+        statusOptions.forEach(option => {
+            const item = document.createElement('div');
+            item.className = 'status-control__option';
+            item.innerHTML = this.getStatusDisplay(option.value);
+            item.addEventListener('click', () => this.handleStatusChange(option.value));
+            dropdown.appendChild(item);
+        });
+        
+        container.appendChild(currentStatus);
+        container.appendChild(dropdown);
+        
+        return container;
+    }
+
+    getStatusOptions() {
+        return [
+            { value: 'New', label: 'New' },
+            { value: 'In Progress', label: 'In Progress' },
+            { value: 'CNP', label: 'CNP' },
+            { value: 'Interested-1', label: 'Interested-1' },
+            { value: 'Interested-2', label: 'Interested-2' },
+            { value: 'Interested-3', label: 'Interested-3' },
+            { value: 'Interested-4', label: 'Interested-4' },
+            { value: 'Interested-5', label: 'Interested-5' },
+            { value: 'Qualified', label: 'Qualified' },
+            { value: 'Converted', label: 'Converted' },
+            { value: 'Lost', label: 'Lost' },
+            { value: 'Dropped', label: 'Dropped' }
+        ];
+    }
+
+    getStatusDisplay(status) {
+        const statusConfig = {
+            'New': { color: '#0000FF', text: 'New' },
+            'In Progress': { color: '#FFD700', text: 'In Progress' },
+            'CNP': { color: '#808080', text: 'CNP' },
+            'Interested-1': { color: '#28C76F', text: 'Interested-1' },
+            'Interested-2': { color: '#28C76F', text: 'Interested-2' },
+            'Interested-3': { color: '#28C76F', text: 'Interested-3' },
+            'Interested-4': { color: '#28C76F', text: 'Interested-4' },
+            'Interested-5': { color: '#28C76F', text: 'Interested-5' },
+            'Qualified': { color: '#1E90FF', text: 'Qualified' },
+            'Converted': { color: '#006400', text: 'Converted' },
+            'Lost': { color: '#FF4D4F', text: 'Lost' },
+            'Dropped': { color: '#FF4D4F', text: 'Dropped' }
+        };
+        
+        const config = statusConfig[status] || { color: '#666', text: status };
+        
+        return `
+            <span class="status-control__badge" style="background-color: ${config.color}">
+                ${config.text}
+            </span>
+            <span class="status-control__arrow">▼</span>
+        `;
+    }
+
+    toggleDropdown() {
+        if (this.isChanging) return;
+        
+        const dropdown = this.element.querySelector('.status-control__dropdown');
+        const isVisible = dropdown.style.display !== 'none';
+        dropdown.style.display = isVisible ? 'none' : 'block';
+    }
+
+    async handleStatusChange(newStatus) {
+        if (this.isChanging) return;
+        
+        const currentStatus = this.config.lead.status;
+        if (newStatus === currentStatus) {
+            this.toggleDropdown();
+            return;
+        }
+        
+        // Show confirmation
+        const confirmed = confirm(`Change status from "${currentStatus}" to "${newStatus}"?`);
+        if (!confirmed) {
+            this.toggleDropdown();
+            return;
+        }
+        
+        this.isChanging = true;
+        this.showLoading();
+        
+        try {
+            // Call API to update status
+            await this.updateStatus(newStatus);
+            
+            // Update local state
+            this.config.lead.status = newStatus;
+            
+            // Update display
+            this.updateDisplay();
+            
+            // Notify parent
+            this.config.onStatusChange(this.config.lead, newStatus);
+            
+            this.showSuccess('Status updated successfully');
+            
+        } catch (error) {
+            console.error('Error updating status:', error);
+            this.showError('Failed to update status');
+        } finally {
+            this.isChanging = false;
+            this.hideLoading();
+            this.toggleDropdown();
+        }
+    }
+
+    async updateStatus(newStatus) {
+        // For now, use mock API call
+        // Later this will be replaced with real API call
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                console.log(`Mock API: Updating lead ${this.config.lead.id} status to ${newStatus}`);
+                resolve();
+            }, 500);
+        });
+    }
+
+    updateDisplay() {
+        const currentStatus = this.element.querySelector('.status-control__current');
+        currentStatus.innerHTML = this.getStatusDisplay(this.config.lead.status);
+    }
+
+    showLoading() {
+        const currentStatus = this.element.querySelector('.status-control__current');
+        currentStatus.innerHTML = '<span class="status-control__loading">Updating...</span>';
+    }
+
+    hideLoading() {
+        this.updateDisplay();
+    }
+
+    showSuccess(message) {
+        // Show success toast
+        this.showToast(message, 'success');
+    }
+
+    showError(message) {
+        // Show error toast
+        this.showToast(message, 'error');
+    }
+
+    showToast(message, type) {
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${type}`;
+        toast.textContent = message;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('toast--show');
+        }, 100);
+        
+        setTimeout(() => {
+            toast.classList.remove('toast--show');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    render() {
+        if (!this.element) {
+            this.createElement();
+        }
+        return this.element;
+    }
+
+    destroy() {
+        if (this.element && this.element.parentNode) {
+            this.element.parentNode.removeChild(this.element);
+        }
+        this.element = null;
+    }
+}
+
+// Export for use in other components
+window.StatusControl = StatusControl;

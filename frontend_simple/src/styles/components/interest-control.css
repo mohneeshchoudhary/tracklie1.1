@@ -1,0 +1,103 @@
+/**
+ * Interest Control Component Styles
+ */
+.interest-control {
+    position: relative;
+    display: inline-block;
+}
+
+.interest-control__container {
+    position: relative;
+}
+
+.interest-control__display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+
+.interest-control__display:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.interest-control__bars {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.interest-control__bar {
+    width: 8px;
+    height: 12px;
+    border-radius: 2px;
+    transition: opacity 0.2s ease;
+}
+
+.interest-control__label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.interest-control__arrow {
+    font-size: 10px;
+    color: var(--text-secondary);
+    transition: transform 0.2s ease;
+}
+
+.interest-control__display:hover .interest-control__arrow {
+    transform: rotate(180deg);
+}
+
+.interest-control__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.interest-control__option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.interest-control__option:last-child {
+    border-bottom: none;
+}
+
+.interest-control__option:hover {
+    background-color: var(--bg-hover);
+}
+
+.interest-control__loading {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Interest level colors */
+.interest-control__bar[style*="#FF4D4F"] { background-color: #FF4D4F !important; }
+.interest-control__bar[style*="#FF7A45"] { background-color: #FF7A45 !important; }
+.interest-control__bar[style*="#FFA940"] { background-color: #FFA940 !important; }
+.interest-control__bar[style*="#FFC53D"] { background-color: #FFC53D !important; }
+.interest-control__bar[style*="#73D13D"] { background-color: #73D13D !important; }
+.interest-control__bar[style*="#52C41A"] { background-color: #52C41A !important; }

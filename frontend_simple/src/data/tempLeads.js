@@ -28,7 +28,16 @@ export const tempLeads = [
     assigned_to: 2,
     created_at: "2024-01-15T10:30:00Z",
     updated_at: "2024-01-15T10:30:00Z",
-    last_contacted: null
+    last_contacted: null,
+    // Stage 6 fields
+    interest_level: 4,
+    cnp_count: 0,
+    last_cnp_at: null,
+    drop_reason: null,
+    dropped_at: null,
+    converted_at: null,
+    product_purchased: null,
+    payment_amount: null
   },
   {
     id: 2,
@@ -54,7 +63,16 @@ export const tempLeads = [
     assigned_to: 3,
     created_at: "2024-01-14T14:20:00Z",
     updated_at: "2024-01-16T09:15:00Z",
-    last_contacted: "2024-01-16T09:15:00Z"
+    last_contacted: "2024-01-16T09:15:00Z",
+    // Stage 6 fields
+    interest_level: 3,
+    cnp_count: 1,
+    last_cnp_at: "2024-01-15T14:00:00Z",
+    drop_reason: null,
+    dropped_at: null,
+    converted_at: null,
+    product_purchased: null,
+    payment_amount: null
   },
   {
     id: 3,
@@ -80,7 +98,16 @@ export const tempLeads = [
     assigned_to: 1,
     created_at: "2024-01-13T16:45:00Z",
     updated_at: "2024-01-17T11:30:00Z",
-    last_contacted: "2024-01-17T11:30:00Z"
+    last_contacted: "2024-01-17T11:30:00Z",
+    // Stage 6 fields
+    interest_level: 5,
+    cnp_count: 0,
+    last_cnp_at: null,
+    drop_reason: null,
+    dropped_at: null,
+    converted_at: null,
+    product_purchased: null,
+    payment_amount: null
   },
   {
     id: 4,
@@ -106,7 +133,16 @@ export const tempLeads = [
     assigned_to: 2,
     created_at: "2024-01-12T11:00:00Z",
     updated_at: "2024-01-15T13:20:00Z",
-    last_contacted: "2024-01-15T13:20:00Z"
+    last_contacted: "2024-01-15T13:20:00Z",
+    // Stage 6 fields
+    interest_level: 2,
+    cnp_count: 2,
+    last_cnp_at: "2024-01-16T10:00:00Z",
+    drop_reason: null,
+    dropped_at: null,
+    converted_at: null,
+    product_purchased: null,
+    payment_amount: null
   },
   {
     id: 5,
@@ -132,7 +168,16 @@ export const tempLeads = [
     assigned_to: null,
     created_at: "2024-01-18T08:30:00Z",
     updated_at: "2024-01-18T08:30:00Z",
-    last_contacted: null
+    last_contacted: null,
+    // Stage 6 fields
+    interest_level: 0,
+    cnp_count: 0,
+    last_cnp_at: null,
+    drop_reason: null,
+    dropped_at: null,
+    converted_at: null,
+    product_purchased: null,
+    payment_amount: null
   },
   {
     id: 6,
@@ -262,7 +307,86 @@ export const tempLeads = [
     assigned_to: null,
     created_at: "2024-01-18T14:00:00Z",
     updated_at: "2024-01-18T14:00:00Z",
-    last_contacted: null
+    last_contacted: null,
+    // Stage 6 fields
+    interest_level: 0,
+    cnp_count: 0,
+    last_cnp_at: null,
+    drop_reason: null,
+    dropped_at: null,
+    converted_at: null,
+    product_purchased: null,
+    payment_amount: null
+  },
+  {
+    id: 11,
+    name: "Converted Lead",
+    phone: "+1-555-0111",
+    email: "converted@example.com",
+    company: "Converted Corp",
+    job_title: "CEO",
+    industry: "Technology",
+    website: "https://converted.com",
+    address: "123 Success St",
+    city: "Success City",
+    state: "SC",
+    zip_code: "12345",
+    country: "USA",
+    notes: "Successfully converted customer",
+    status: "Converted",
+    source: "Website",
+    priority: "High",
+    budget: 75000,
+    language: "English",
+    created_by: 1,
+    assigned_to: 2,
+    created_at: "2024-01-10T10:00:00Z",
+    updated_at: "2024-01-20T15:30:00Z",
+    last_contacted: "2024-01-20T15:30:00Z",
+    // Stage 6 fields
+    interest_level: 5,
+    cnp_count: 0,
+    last_cnp_at: null,
+    drop_reason: null,
+    dropped_at: null,
+    converted_at: "2024-01-20T15:30:00Z",
+    product_purchased: "Premium CRM Package",
+    payment_amount: 75000
+  },
+  {
+    id: 12,
+    name: "Dropped Lead",
+    phone: "+1-555-0112",
+    email: "dropped@example.com",
+    company: "Dropped Inc",
+    job_title: "Manager",
+    industry: "Retail",
+    website: "https://dropped.com",
+    address: "456 Dropped Ave",
+    city: "Dropped City",
+    state: "DC",
+    zip_code: "54321",
+    country: "USA",
+    notes: "Lead was dropped due to budget constraints",
+    status: "Dropped",
+    source: "Cold Call",
+    priority: "Medium",
+    budget: 10000,
+    language: "English",
+    created_by: 2,
+    assigned_to: 1,
+    created_at: "2024-01-08T09:00:00Z",
+    updated_at: "2024-01-19T12:00:00Z",
+    last_contacted: "2024-01-19T12:00:00Z",
+    // Stage 6 fields
+    interest_level: 1,
+    cnp_count: 3,
+    last_cnp_at: "2024-01-18T14:00:00Z",
+    drop_reason: "Financial - Budget constraints",
+    dropped_at: "2024-01-19T12:00:00Z",
+    converted_at: null,
+    product_purchased: null,
+    payment_amount: null
   }
 ];
 
