@@ -163,6 +163,7 @@ class LeadsPage {
             totalPages: Math.ceil(this.filteredLeads.length / this.itemsPerPage),
             totalItems: this.filteredLeads.length,
             itemsPerPage: this.itemsPerPage,
+            showInfo: true,
             onPageChange: (page) => this.handlePageChange(page)
         });
         

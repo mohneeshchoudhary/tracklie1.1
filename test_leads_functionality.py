@@ -113,7 +113,7 @@ def test_leads_page_navigation(driver):
     try:
         # Navigate to leads page
         driver.get("http://localhost:3000/#leads")
-        time.sleep(5)  # Increased wait time
+        time.sleep(8)  # Wait longer for page to load
         
         # Check if leads page loaded
         leads_page = driver.find_element(By.CSS_SELECTOR, "[data-testid='leads-page']")
