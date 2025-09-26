@@ -125,6 +125,17 @@
     transition: all 0.2s ease;
 }
 
+.lead-modal__select {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+}
+
+.lead-modal__select option {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    padding: 8px 12px;
+}
+
 .lead-modal__input:focus,
 .lead-modal__select:focus,
 .lead-modal__textarea:focus {

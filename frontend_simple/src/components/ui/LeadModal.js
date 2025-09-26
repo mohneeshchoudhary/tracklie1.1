@@ -55,29 +55,11 @@ class LeadModal {
             { name: 'company', label: 'Company', type: 'text', required: false }
         ]);
         
-        // Lead Details Section
+        // Lead Details Section (simplified for Stage 4)
         const detailsSection = this.createSection('Lead Details', [
-            { name: 'status', label: 'Status', type: 'select', required: true, options: [
-                { value: 'new', label: 'New' },
-                { value: 'in_progress', label: 'In Progress' },
-                { value: 'interested', label: 'Interested' },
-                { value: 'converted', label: 'Converted' },
-                { value: 'dropped', label: 'Dropped' }
-            ]},
-            { name: 'source', label: 'Source', type: 'select', required: true, options: [
-                { value: 'website', label: 'Website' },
-                { value: 'referral', label: 'Referral' },
-                { value: 'social_media', label: 'Social Media' },
-                { value: 'cold_call', label: 'Cold Call' },
-                { value: 'email_campaign', label: 'Email Campaign' },
-                { value: 'trade_show', label: 'Trade Show' },
-                { value: 'other', label: 'Other' }
-            ]},
-            { name: 'priority', label: 'Priority', type: 'select', required: true, options: [
-                { value: 'low', label: 'Low' },
-                { value: 'medium', label: 'Medium' },
-                { value: 'high', label: 'High' }
-            ]}
+            { name: 'jobTitle', label: 'Job Title', type: 'text', required: false },
+            { name: 'industry', label: 'Industry', type: 'text', required: false },
+            { name: 'website', label: 'Website', type: 'url', required: false }
         ]);
         
         // Additional Information Section
@@ -204,17 +186,9 @@ class LeadModal {
     }
 
     setFieldPermissions() {
-        // Salesperson can only update certain fields
-        if (this.config.userRole === 'salesperson') {
-            const restrictedFields = ['status', 'source', 'priority'];
-            restrictedFields.forEach(fieldName => {
-                const field = this.element.querySelector(`[name="${fieldName}"]`);
-                if (field) {
-                    field.disabled = true;
-                    field.title = 'Only admins can modify this field';
-                }
-            });
-        }
+        // For Stage 4, all fields are editable by all users
+        // Field permissions will be implemented in Stage 6
+        // This method is kept for future use
     }
 
     populateForm() {
