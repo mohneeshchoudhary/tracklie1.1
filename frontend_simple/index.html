@@ -3,7 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tracklie CRM</title>
+    <title>Tracklie CRM - Intelligent Sales Management Platform</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Tracklie is an intelligent CRM platform that transforms your sales process with AI-powered insights, automated follow-ups, and real-time analytics. Close more deals, faster than ever before.">
+    <meta name="keywords" content="CRM, sales management, lead tracking, sales automation, AI-powered CRM, sales analytics, customer relationship management">
+    <meta name="author" content="Tracklie">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' http://localhost:8000 https://www.google-analytics.com; font-src 'self' data:;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Tracklie CRM - Intelligent Sales Management Platform">
+    <meta property="og:description" content="Transform your sales process with AI-powered insights and automation. Close more deals, faster than ever before.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tracklie.com">
+    <meta property="og:image" content="https://tracklie.com/images/og-image.jpg">
+    <meta property="og:site_name" content="Tracklie">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tracklie CRM - Intelligent Sales Management Platform">
+    <meta name="twitter:description" content="Transform your sales process with AI-powered insights and automation.">
+    <meta name="twitter:image" content="https://tracklie.com/images/twitter-card.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://tracklie.com">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Tracklie CRM",
+      "description": "Intelligent CRM platform that transforms your sales process with AI-powered insights and automation",
+      "url": "https://tracklie.com",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free trial available"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Tracklie",
+        "url": "https://tracklie.com"
+      },
+      "featureList": [
+        "AI-powered lead management",
+        "Automated follow-ups",
+        "Real-time analytics",
+        "Role-based access control",
+        "Sales automation",
+        "Performance tracking"
+      ]
+    }
+    </script>
+    
     <link rel="stylesheet" href="src/styles/main.css">
 </head>
 <body>
@@ -11,6 +78,10 @@
         <!-- Application will be rendered here by JavaScript -->
     </div>
 
+    <!-- Load utilities -->
+    <script src="src/utils/logger.js"></script>
+    <script src="src/utils/debug-panel.js"></script>
+    
     <!-- Load services -->
     <script src="src/services/auth.js"></script>
     

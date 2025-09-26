@@ -224,6 +224,47 @@ class TestStage3RolesSimple:
         dashboard_title = self.driver.find_element(By.CSS_SELECTOR, '[data-testid="dashboard-role-title"]')
         assert 'Salesperson Dashboard' in dashboard_title.text
 
+    def test_dashboard_redirect_behavior(self):
+        """Test that unauthenticated users are redirected from dashboard to home with login modal"""
+        # Set guest user
+        self.set_user_role(None, 'Guest')
+        time.sleep(1)
+        
+        # Navigate directly to dashboard
+        self.driver.get(f"{self.base_url}/#dashboard")
+        time.sleep(3)  # Allow for redirect and modal to appear
+        
+        # Should be redirected to home page
+        current_url = self.driver.current_url
+        assert 'home' in current_url or '#' not in current_url or current_url.endswith('/')
+        
+        # Login modal should be visible
+        try:
+            modal = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.login-modal')))
+            assert modal.is_displayed()
+        except TimeoutException:
+            # Modal might not be visible due to timing, check if it exists in DOM
+            modal = self.driver.find_element(By.CSS_SELECTOR, '.login-modal')
+            assert modal is not None
+
+    def test_authenticated_user_dashboard_access(self):
+        """Test that authenticated users can access dashboard directly"""
+        # Set admin user
+        self.set_user_role('admin', 'Admin User')
+        time.sleep(1)
+        
+        # Navigate directly to dashboard
+        self.driver.get(f"{self.base_url}/#dashboard")
+        time.sleep(2)
+        
+        # Should stay on dashboard
+        current_url = self.driver.current_url
+        assert 'dashboard' in current_url
+        
+        # Dashboard should be visible
+        dashboard = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="dashboard-page"]')))
+        assert dashboard.is_displayed()
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

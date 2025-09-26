@@ -20,30 +20,66 @@ class DashboardPage {
             <div class="dashboard-loading">
                 <div class="loading-spinner"></div>
                 <p>Loading dashboard...</p>
+                <div class="loading-progress">
+                    <div class="loading-bar"></div>
+                </div>
             </div>
         `;
     }
 
     updateUserInfo(user) {
+        console.log('DashboardPage: updateUserInfo called with:', user);
         this.userRole = user ? user.role : null;
         this.userName = user ? user.name : 'Guest';
+        console.log('DashboardPage: Updated userRole to:', this.userRole, 'userName to:', this.userName);
+        
+        // Force re-render the dashboard
         this.renderDashboard();
+        
+        // Also force update the DOM element if it exists
+        if (this.element) {
+            console.log('DashboardPage: Force updating DOM element');
+            this.renderDashboard();
+        }
     }
 
     renderDashboard() {
+        console.log('DashboardPage: renderDashboard called with userRole:', this.userRole);
+        
         if (!this.userRole) {
+            console.log('DashboardPage: No user role, redirecting to home');
+            // Redirect to home page and show login modal
+            window.location.hash = 'home';
+            // Show login modal after a short delay to ensure home page is loaded
+            setTimeout(() => {
+                if (window.AuthContext) {
+                    window.AuthContext.showLoginModal();
+                }
+            }, 100);
+            return;
+        }
+        
+        console.log('DashboardPage: Rendering dashboard for role:', this.userRole);
+
+        // Ensure we have RoleUtils available
+        if (!window.RoleUtils) {
+            console.error('RoleUtils not available!');
             this.element.innerHTML = `
                 <div class="dashboard-error">
-                    <h2>Access Denied</h2>
-                    <p>Please login to access the dashboard.</p>
+                    <h2>Configuration Error</h2>
+                    <p>Role configuration not loaded. Please refresh the page.</p>
                 </div>
             `;
             return;
         }
 
-        const roleDisplayName = window.RoleUtils ? window.RoleUtils.getRoleDisplayName(this.userRole) : this.userRole;
-        const roleDescription = window.RoleUtils ? window.RoleUtils.getRoleDescription(this.userRole) : 'User';
-        const widgets = window.RoleUtils ? window.RoleUtils.getDashboardWidgets(this.userRole) : [];
+        const roleDisplayName = window.RoleUtils.getRoleDisplayName(this.userRole);
+        const roleDescription = window.RoleUtils.getRoleDescription(this.userRole);
+        const widgets = window.RoleUtils.getDashboardWidgets(this.userRole);
+        
+        console.log('DashboardPage: Role display name:', roleDisplayName);
+        console.log('DashboardPage: Role description:', roleDescription);
+        console.log('DashboardPage: Widgets:', widgets);
 
         this.element.innerHTML = `
             <div class="dashboard-header">

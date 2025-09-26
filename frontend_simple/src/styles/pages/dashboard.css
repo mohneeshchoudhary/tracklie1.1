@@ -28,6 +28,28 @@
     margin-bottom: var(--spacing-md);
 }
 
+.loading-progress {
+    width: 200px;
+    height: 4px;
+    background: var(--color-border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: var(--spacing-md);
+}
+
+.loading-bar {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    animation: loading-progress 2s ease-in-out infinite;
+}
+
+@keyframes loading-progress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
 .dashboard-error {
     text-align: center;
     padding: var(--spacing-xl);

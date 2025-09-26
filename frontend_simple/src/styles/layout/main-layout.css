@@ -3,19 +3,32 @@
   display: flex;
   min-height: 100vh;
   background-color: var(--color-background);
+  position: relative;
 }
 
 .main-layout__sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: var(--sidebar-width);
+  width: var(--sidebar-width) !important;
   height: 100vh;
-  background-color: var(--color-sidebar);
-  border-right: 1px solid var(--color-border);
   z-index: var(--z-fixed);
   overflow-y: auto;
   overflow-x: hidden;
+  transition: width 0.3s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* Ensure sidebar content doesn't exceed container */
+.main-layout__sidebar .sidebar {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Collapsed sidebar width */
+.main-layout--sidebar-collapsed .main-layout__sidebar {
+  width: var(--sidebar-width-collapsed) !important;
 }
 
 .main-layout__content {
@@ -24,6 +37,14 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: margin-left 0.3s ease-in-out;
+  background: var(--color-background);
+  position: relative;
+}
+
+/* Collapsed sidebar content adjustment */
+.main-layout--sidebar-collapsed .main-layout__content {
+  margin-left: var(--sidebar-width-collapsed);
 }
 
 .main-layout__topbar {

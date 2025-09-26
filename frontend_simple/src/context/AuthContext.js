@@ -9,9 +9,11 @@ class AuthContext {
         this.isLoading = true;
         this.listeners = [];
         this.loginModal = null;
+        this.initializationPromise = null;
+        this.isInitialized = false;
         
         // Initialize auth state
-        this.initializeAuth();
+        this.initializationPromise = this.initializeAuth();
     }
 
     /**
@@ -19,26 +21,40 @@ class AuthContext {
      */
     async initializeAuth() {
         try {
+            window.Logger?.debug('Initializing authentication');
+            
             // Check if user is stored in localStorage
             const storedUser = window.AuthService.getStoredUser();
             
             if (storedUser) {
-                // Verify token is still valid
+                window.Logger?.debug('Found stored user, verifying token');
+                
+                // Verify token is still valid with timeout
                 try {
-                    const user = await window.AuthService.verifyAuth();
+                    const user = await Promise.race([
+                        window.AuthService.verifyAuth(),
+                        new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('Auth verification timeout')), 5000)
+                        )
+                    ]);
                     this.setUser(user);
+                    window.Logger?.info('User authentication verified successfully');
                 } catch (error) {
+                    window.Logger?.warn('Auth verification failed', { error: error.message });
                     // Token is invalid, clear stored data
                     this.clearAuth();
                 }
             } else {
+                window.Logger?.debug('No stored user found');
                 this.clearAuth();
             }
         } catch (error) {
-            console.error('Auth initialization error:', error);
+            window.Logger?.error('Auth initialization error', { error: error.message });
             this.clearAuth();
         } finally {
             this.setLoading(false);
+            this.isInitialized = true;
+            window.Logger?.debug('Auth initialization completed');
         }
     }
 
@@ -69,6 +85,16 @@ class AuthContext {
     }
 
     /**
+     * Wait for initialization to complete
+     */
+    async waitForInitialization() {
+        if (this.initializationPromise) {
+            await this.initializationPromise;
+        }
+        return this.isInitialized;
+    }
+
+    /**
      * Show login modal
      */
     showLoginModal() {
@@ -77,6 +103,30 @@ class AuthContext {
             this.loginModal.onLoginSuccess = (user) => {
                 this.setUser(user);
                 this.hideLoginModal();
+                
+                // Update the main layout with new user info
+                if (window.mainLayout) {
+                    window.mainLayout.updateUserInfo(user);
+                }
+                
+                // Force dashboard to update with new user info
+                setTimeout(() => {
+                    if (window.mainLayout && window.mainLayout.dashboardPage) {
+                        console.log('Force updating dashboard with user:', user);
+                        window.mainLayout.dashboardPage.updateUserInfo(user);
+                    }
+                    
+                    // Force sidebar to update with new user info
+                    if (window.mainLayout && window.mainLayout.sidebar) {
+                        console.log('Force updating sidebar with user:', user);
+                        window.mainLayout.sidebar.updateUserInfo(user);
+                        // Also force refresh the sidebar
+                        window.mainLayout.sidebar.forceRefresh();
+                    }
+                }, 100);
+                
+                // Redirect to dashboard after successful login
+                window.location.hash = 'dashboard';
             };
             this.loginModal.onClose = () => {
                 this.hideLoginModal();

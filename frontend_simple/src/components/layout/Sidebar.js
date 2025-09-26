@@ -12,6 +12,7 @@ class Sidebar {
       },
       navigation: [], // Will be populated based on role
       onNavigate: null,
+      isCollapsed: false, // New: sidebar collapsed state
       ...config
     };
     
@@ -52,19 +53,27 @@ class Sidebar {
   updateUserInfo(authState) {
     console.log('Sidebar.updateUserInfo called with:', authState);
     
+    // Handle both direct user object and authState object
+    let user = authState;
+    if (authState && authState.user) {
+      user = authState.user;
+    }
+    
     // Update user info
-    if (authState.isAuthenticated && authState.user) {
+    if (user && user.name && user.role) {
       this.config.user = {
-        name: authState.user.name,
-        role: authState.user.role,
-        avatar: authState.user.name.charAt(0).toUpperCase()
+        name: user.name,
+        role: user.role,
+        avatar: user.name.charAt(0).toUpperCase()
       };
+      console.log('Sidebar: Updated to authenticated user:', this.config.user);
     } else {
       this.config.user = {
         name: 'Guest',
         role: null,
         avatar: 'G'
       };
+      console.log('Sidebar: Updated to guest user:', this.config.user);
     }
 
     console.log('Updated user config:', this.config.user);
@@ -78,9 +87,13 @@ class Sidebar {
   }
 
   updateNavigation() {
+    console.log('Sidebar: updateNavigation called for role:', this.config.user.role);
+    
     if (this.config.user.role && window.RoleUtils) {
       // Get role-based navigation items
       const roleNavItems = window.RoleUtils.getNavigationItems(this.config.user.role);
+      console.log('Sidebar: Role-based navigation items:', roleNavItems);
+      
       this.config.navigation = roleNavItems.map(item => ({
         id: item.id,
         text: item.label,
@@ -88,6 +101,8 @@ class Sidebar {
         href: item.path,
         badge: item.badge
       }));
+      
+      console.log('Sidebar: Mapped navigation items:', this.config.navigation);
     } else {
       // Default navigation for unauthenticated users (guest)
       this.config.navigation = [
@@ -106,6 +121,7 @@ class Sidebar {
           badge: null
         }
       ];
+      console.log('Sidebar: Using default navigation for guest user');
     }
   }
   
@@ -113,6 +129,11 @@ class Sidebar {
     this.element = document.createElement('aside');
     this.element.className = 'sidebar';
     this.element.setAttribute('data-testid', 'sidebar');
+    
+    // Add collapsed class if needed
+    if (this.config.isCollapsed) {
+      this.element.classList.add('sidebar--collapsed');
+    }
     
     this.render();
   }
@@ -122,19 +143,28 @@ class Sidebar {
     this.element.innerHTML = '';
     this.navItems = []; // Reset nav items array
     
+    // Update collapsed class
+    if (this.config.isCollapsed) {
+      this.element.classList.add('sidebar--collapsed');
+    } else {
+      this.element.classList.remove('sidebar--collapsed');
+    }
+    
     // Logo section
     const logoSection = this.createLogoSection();
     
     // Navigation sections
     const navSection = this.createNavigationSection();
     
-    // User info section
-    const userSection = this.createUserSection();
+    // User info section (only show when not collapsed)
+    if (!this.config.isCollapsed) {
+      const userSection = this.createUserSection();
+      this.element.appendChild(userSection);
+    }
     
     // Assemble sidebar
     this.element.appendChild(logoSection);
     this.element.appendChild(navSection);
-    this.element.appendChild(userSection);
     
     // Re-attach event listeners
     this.attachEventListeners();
@@ -145,6 +175,13 @@ class Sidebar {
     const logoSection = document.createElement('div');
     logoSection.className = 'sidebar__logo';
     
+    // Hamburger menu button
+    const hamburgerBtn = document.createElement('button');
+    hamburgerBtn.className = 'sidebar__hamburger';
+    hamburgerBtn.innerHTML = '☰';
+    hamburgerBtn.setAttribute('aria-label', 'Toggle sidebar');
+    hamburgerBtn.addEventListener('click', () => this.toggleCollapsed());
+    
     const logo = document.createElement('div');
     logo.className = 'sidebar__logo-icon';
     logo.innerHTML = '🎯';
@@ -153,6 +190,7 @@ class Sidebar {
     logoText.className = 'sidebar__logo-text';
     logoText.innerHTML = '<span class="logo-primary">Track</span><span class="logo-secondary">lie</span>';
     
+    logoSection.appendChild(hamburgerBtn);
     logoSection.appendChild(logo);
     logoSection.appendChild(logoText);
     
@@ -164,13 +202,17 @@ class Sidebar {
     navSection.className = 'sidebar__nav';
     navSection.setAttribute('data-testid', 'sidebar-navigation');
     
+    console.log('Sidebar: Creating navigation section with items:', this.config.navigation);
+    
     // Create navigation items based on role
     this.config.navigation.forEach(navItem => {
+      console.log('Sidebar: Creating nav item:', navItem);
       const navElement = this.createNavItem(navItem);
       navSection.appendChild(navElement);
       this.navItems.push(navElement);
     });
     
+    console.log('Sidebar: Created', this.navItems.length, 'navigation items');
     return navSection;
   }
   
@@ -181,29 +223,47 @@ class Sidebar {
     navItem.setAttribute('data-testid', `sidebar-${item.id}`);
     navItem.setAttribute('data-page', item.id);
     
+    // Add tooltip for collapsed state
+    if (this.config.isCollapsed) {
+      navItem.setAttribute('title', item.text);
+    }
+    
     // Icon
     const icon = document.createElement('div');
-    icon.className = `sidebar__nav-icon sidebar__nav-icon--${item.icon}`;
+    icon.className = 'sidebar__nav-icon';
     
-    // Text
-    const text = document.createElement('span');
-    text.className = 'sidebar__nav-text';
-    text.textContent = item.text;
+    // Set icon based on item type
+    const iconMap = {
+      'home': '🏠',
+      'dashboard': '📊',
+      'leads': '👥',
+      'followups': '📞',
+      'payments': '💰',
+      'reports': '📈',
+      'settings': '⚙️',
+      'profile': '👤'
+    };
     
-    // Badge (if present)
-    let badge = null;
-    if (item.badge) {
-      badge = document.createElement('span');
+    icon.textContent = iconMap[item.icon] || '📄';
+    
+    // Text (only show when not collapsed)
+    if (!this.config.isCollapsed) {
+      const text = document.createElement('span');
+      text.className = 'sidebar__nav-text';
+      text.textContent = item.text;
+      navItem.appendChild(text);
+    }
+    
+    // Badge (if present and not collapsed)
+    if (item.badge && !this.config.isCollapsed) {
+      const badge = document.createElement('span');
       badge.className = 'sidebar__nav-badge';
       badge.textContent = item.badge;
+      navItem.appendChild(badge);
     }
     
     // Assemble nav item
     navItem.appendChild(icon);
-    navItem.appendChild(text);
-    if (badge) {
-      navItem.appendChild(badge);
-    }
     
     return navItem;
   }
@@ -217,7 +277,7 @@ class Sidebar {
     userAvatar.textContent = this.config.user.avatar;
     
     const userInfo = document.createElement('div');
-    userInfo.className = 'sidebar__user-info';
+    userInfo.className = 'sidebar__user-details';
     
     const userName = document.createElement('div');
     userName.className = 'sidebar__user-name';
@@ -304,6 +364,36 @@ class Sidebar {
   
   getElement() {
     return this.element;
+  }
+
+  // Public method to force refresh the sidebar
+  forceRefresh() {
+    console.log('Sidebar: Force refresh called');
+    this.render();
+  }
+
+  // Toggle sidebar collapsed state
+  toggleCollapsed() {
+    this.config.isCollapsed = !this.config.isCollapsed;
+    this.render();
+    console.log('Sidebar: Toggled to', this.config.isCollapsed ? 'collapsed' : 'expanded');
+    
+    // Notify parent layout if available
+    if (window.mainLayout && window.mainLayout.onSidebarToggle) {
+      window.mainLayout.onSidebarToggle();
+    }
+  }
+
+  // Set sidebar collapsed state
+  setCollapsed(collapsed) {
+    this.config.isCollapsed = collapsed;
+    this.render();
+    console.log('Sidebar: Set to', collapsed ? 'collapsed' : 'expanded');
+  }
+
+  // Get current collapsed state
+  isCollapsed() {
+    return this.config.isCollapsed;
   }
   
   destroy() {

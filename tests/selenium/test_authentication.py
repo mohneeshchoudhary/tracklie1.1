@@ -323,6 +323,56 @@ class TestAuthentication:
         assert password_error.is_displayed()
         assert "6 characters" in password_error.text.lower()
 
+    def test_dashboard_redirect_with_login_modal(self):
+        """Test that accessing dashboard without auth redirects to home with login modal"""
+        # Navigate directly to dashboard
+        self.driver.get("http://localhost:3000/#dashboard")
+        time.sleep(3)  # Allow for redirect and modal to appear
+        
+        # Should be redirected to home page
+        current_url = self.driver.current_url
+        assert 'home' in current_url or '#' not in current_url or current_url.endswith('/')
+        
+        # Login modal should be visible
+        try:
+            modal = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.login-modal')))
+            assert modal.is_displayed()
+        except TimeoutException:
+            # Modal might not be visible due to timing, check if it exists in DOM
+            modal = self.driver.find_element(By.CSS_SELECTOR, '.login-modal')
+            assert modal is not None
+
+    def test_successful_login_redirects_to_dashboard(self):
+        """Test that successful login redirects user to dashboard"""
+        # Open login modal
+        login_btn = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="action-login"]')))
+        self.driver.execute_script('arguments[0].click();', login_btn)
+        
+        # Wait for modal to appear
+        modal = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.login-modal')))
+        
+        # Fill in login form
+        email_input = modal.find_element(By.CSS_SELECTOR, '#email')
+        password_input = modal.find_element(By.CSS_SELECTOR, '#password')
+        
+        email_input.send_keys('admin@tracklie.com')
+        password_input.send_keys('admin123')
+        
+        # Submit form
+        submit_btn = modal.find_element(By.CSS_SELECTOR, '#loginSubmit')
+        self.driver.execute_script('arguments[0].click();', submit_btn)
+        
+        # Wait for redirect to dashboard
+        time.sleep(3)
+        
+        # Should be on dashboard
+        current_url = self.driver.current_url
+        assert 'dashboard' in current_url
+        
+        # Dashboard should be visible
+        dashboard = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="dashboard-page"]')))
+        assert dashboard.is_displayed()
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

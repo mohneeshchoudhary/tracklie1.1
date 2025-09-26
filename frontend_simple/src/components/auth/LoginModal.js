@@ -152,20 +152,32 @@ class LoginModal {
     }
 
     validateEmail() {
-        const email = this.element.querySelector('#email').value.trim();
+        const emailInput = this.element.querySelector('#email');
+        const email = emailInput.value.trim();
         const emailError = this.element.querySelector('#emailError');
         
-        if (!email) {
+        // Sanitize input to prevent XSS
+        const sanitizedEmail = this.sanitizeInput(email);
+        
+        if (!sanitizedEmail) {
             this.showError('emailError', 'Email is required');
             return false;
         }
         
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        // Check for suspicious patterns
+        if (this.containsSuspiciousPatterns(sanitizedEmail)) {
+            this.showError('emailError', 'Invalid email format');
+            return false;
+        }
+        
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(sanitizedEmail)) {
             this.showError('emailError', 'Please enter a valid email address');
             return false;
         }
         
+        // Update input with sanitized value
+        emailInput.value = sanitizedEmail;
         this.clearError('emailError');
         return true;
     }
@@ -228,9 +240,17 @@ class LoginModal {
             document.body.appendChild(this.element);
             this.isVisible = true;
             
-            // Focus on email input
+            // Add modal-open class to body
+            document.body.classList.add('modal-open');
+            
+            // Focus on email input with accessibility
             setTimeout(() => {
-                this.element.querySelector('#email').focus();
+                const emailInput = this.element.querySelector('#email');
+                if (emailInput) {
+                    emailInput.focus();
+                    // Announce modal opening to screen readers
+                    this.announceToScreenReader('Login modal opened');
+                }
             }, 100);
             
             // Prevent body scroll
@@ -243,13 +263,66 @@ class LoginModal {
             document.body.removeChild(this.element);
             this.isVisible = false;
             
+            // Remove modal-open class from body
+            document.body.classList.remove('modal-open');
+            
             // Restore body scroll
             document.body.style.overflow = '';
+            
+            // Announce modal closing to screen readers
+            this.announceToScreenReader('Login modal closed');
             
             if (this.onClose) {
                 this.onClose();
             }
         }
+    }
+
+    announceToScreenReader(message) {
+        // Create a temporary element for screen reader announcements
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.setAttribute('aria-atomic', 'true');
+        announcement.style.position = 'absolute';
+        announcement.style.left = '-10000px';
+        announcement.style.width = '1px';
+        announcement.style.height = '1px';
+        announcement.style.overflow = 'hidden';
+        announcement.textContent = message;
+        
+        document.body.appendChild(announcement);
+        
+        // Remove after announcement
+        setTimeout(() => {
+            document.body.removeChild(announcement);
+        }, 1000);
+    }
+
+    sanitizeInput(input) {
+        // Remove potentially dangerous characters
+        return input
+            .replace(/[<>\"'&]/g, '') // Remove HTML/XML characters
+            .replace(/javascript:/gi, '') // Remove javascript: protocol
+            .replace(/on\w+=/gi, '') // Remove event handlers
+            .trim();
+    }
+
+    containsSuspiciousPatterns(input) {
+        const suspiciousPatterns = [
+            /<script/i,
+            /javascript:/i,
+            /on\w+\s*=/i,
+            /<iframe/i,
+            /<object/i,
+            /<embed/i,
+            /<link/i,
+            /<meta/i,
+            /<style/i,
+            /expression\s*\(/i,
+            /url\s*\(/i
+        ];
+        
+        return suspiciousPatterns.some(pattern => pattern.test(input));
     }
 
     destroy() {

@@ -3,6 +3,11 @@
  * Modern modal with glass-morphism and gradient effects
  */
 
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
 .login-modal {
     position: fixed;
     top: 0;

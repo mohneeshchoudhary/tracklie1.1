@@ -197,8 +197,16 @@ const RoleUtils = {
      * Get allowed pages for a role
      */
     getAllowedPages(userRole) {
+        if (!userRole) {
+            // For unauthenticated users, only allow Home and Dashboard
+            return [PAGES.HOME, PAGES.DASHBOARD];
+        }
         const permissions = ROLE_PERMISSIONS[userRole];
-        return permissions ? permissions.pages : [];
+        if (permissions) {
+            // For authenticated users, exclude Home page
+            return permissions.pages.filter(page => page !== PAGES.HOME);
+        }
+        return [];
     },
 
     /**

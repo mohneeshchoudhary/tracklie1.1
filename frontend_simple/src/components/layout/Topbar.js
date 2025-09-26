@@ -238,6 +238,23 @@ class Topbar {
     return titleMap[hash] || 'Home';
   }
   
+  updateUserInfo(userInfo) {
+    console.log('Topbar: updateUserInfo called with:', userInfo);
+    
+    // Update user config
+    this.config.user = { ...this.config.user, ...userInfo };
+    
+    // Update welcome message
+    if (userInfo && userInfo.name && userInfo.role) {
+      this.config.welcomeMessage = `Welcome back, ${userInfo.name}!`;
+    } else {
+      this.config.welcomeMessage = 'Welcome! Please login to access features.';
+    }
+    
+    // Re-render the topbar
+    this.render();
+  }
+
   getElement() {
     return this.element;
   }
