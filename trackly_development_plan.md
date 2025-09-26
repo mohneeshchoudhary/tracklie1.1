@@ -464,13 +464,15 @@ Lay the foundation for all pages with a **visually consistent**, **CRM-style**, 
 
 | Task | Done ✅ | Selenium Tested 🧪 |
 | ----- | ----- | ----- |
-| `role.config.ts` or similar created with route/role mapping | \[ \] | N/A |
-| Sidebar renders only allowed items per role | \[ \] | \[ \] |
-| Each dashboard route shows correct title based on user role | \[ \] | \[ \] |
-| Dummy metrics/cards shown per role in dashboard | \[ \] | \[ \] |
-| Attempt to access restricted page redirects to `/dashboard` | \[ \] | \[ \] |
-| Role stored in Auth Context and used across layout | \[ \] | \[ \] |
-| Sidebar hover and active color use Tracklie theme | \[ \] | \[ \] |
+| `role.config.js` created with route/role mapping | ✅ | N/A |
+| Sidebar renders only allowed items per role | ✅ | ✅ |
+| Each dashboard route shows correct title based on user role | ✅ | ✅ |
+| Dummy metrics/cards shown per role in dashboard | ✅ | ✅ |
+| Attempt to access restricted page redirects to `/dashboard` | ✅ | ✅ |
+| Role stored in Auth Context and used across layout | ✅ | ✅ |
+| Sidebar hover and active color use Tracklie theme | ✅ | ✅ |
+| **BONUS: Sidebar width and gap issues fixed** | ✅ | ✅ |
+| **BONUS: Collapsible sidebar with hamburger menu** | ✅ | ✅ |
 
 **✅ Stage 4: Leads Page UI (Structure Only, No Logic Yet)**
 
