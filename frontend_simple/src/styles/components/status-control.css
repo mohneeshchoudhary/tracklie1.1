@@ -4,6 +4,7 @@
 .status-control {
     position: relative;
     display: inline-block;
+    z-index: 1000;
 }
 
 .status-control__container {
@@ -59,7 +60,7 @@
     border: 2px solid var(--primary-color);
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    z-index: 99999;
+    z-index: 999999;
     max-height: 200px;
     overflow-y: auto;
     margin-top: 4px;
