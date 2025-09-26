@@ -6,7 +6,7 @@
 | **1** | **✅ Project Layout + Navigation Shell** | **Fixed sidebar, topbar, routing, placeholder pages** |
 | **2** | **✅ Authentication & Role-Based Access** | **JWT login/logout, session-based, role guards** |
 | **3** | **✅ User Roles + Sidebar Control + Dashboard Shells** | **Role-based navigation, dynamic dashboards, sidebar fixes** |
-| **4** | **Lead Management (CRUD, Status, Source, Drop, Restore)** | **End-to-end lead lifecycle including soft delete** |
+| **4** | **✅ Lead Management UI (Structure Only, No Logic Yet)** | **Full UI shell for Leads module with filters, table, search, and status badges** |
 | **5** | **Follow-Up Scheduling \+ Alerts** | **Schedule follow-ups, missed status, pause reasons** |
 | **6** | **Payments Flow (Post-Conversion Only)** | **Manual payments, installment tracking, badges** |
 | **7** | **Dashboard Widgets (Role-Based Stats)** | **Personalized metrics for Sales, Admin, Recovery** |
@@ -587,15 +587,15 @@ You can use `StatusBadge` like:
 
 | Task | Done ✅ | Selenium Tested 🧪 |
 | ----- | ----- | ----- |
-| LeadsPage route is registered (`/leads`) | \[ \] | \[ \] |
-| LeadsTable displays mock data | \[ \] | \[ \] |
-| Columns: Name, Phone, Status, Assigned, Updated present | \[ \] | \[ \] |
-| StatusBadge renders color-coded label | \[ \] | \[ \] |
-| Filter bar shows search \+ 2 dropdowns \+ date range filter | \[ \] | \[ \] |
-| Placeholder text shown if no leads | \[ \] | \[ \] |
-| Pagination bar renders with controls | \[ \] | \[ \] |
-| All elements use consistent theme (dark, Tracklie colors) | \[ \] | \[ \] |
-| All key components are modular | \[ \] | \[ \] |
+| LeadsPage route is registered (`/leads`) | ✅ | ✅ |
+| LeadsTable displays mock data | ✅ | ✅ |
+| Columns: Name, Phone, Status, Assigned, Updated present | ✅ | ✅ |
+| StatusBadge renders color-coded label | ✅ | ✅ |
+| Filter bar shows search \+ 2 dropdowns \+ date range filter | ✅ | ✅ |
+| Placeholder text shown if no leads | ✅ | ✅ |
+| Pagination bar renders with controls | ✅ | ✅ |
+| All elements use consistent theme (dark, Tracklie colors) | ✅ | ✅ |
+| All key components are modular | ✅ | ✅ |
 
 # **✅ Stage 5: Lead Ingestion (Manual \+ API)**
 
