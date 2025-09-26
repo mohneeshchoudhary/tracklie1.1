@@ -37,7 +37,29 @@ export const tempLeads = [
     dropped_at: null,
     converted_at: null,
     product_purchased: null,
-    payment_amount: null
+    payment_amount: null,
+    // Call tracking
+    total_calls: 2,
+    successful_calls: 1,
+    call_history: [
+      {
+        id: 1,
+        date: "2024-01-16T10:00:00Z",
+        outcome: "CNP",
+        reason: "Ringed not picked",
+        made_by: "Admin User"
+      },
+      {
+        id: 2,
+        date: "2024-01-17T14:30:00Z",
+        outcome: "Picked",
+        status_change: "Interested",
+        interest_level: 4,
+        next_action: "Demo",
+        next_call_date: "2024-01-20T10:00:00Z",
+        made_by: "Admin User"
+      }
+    ]
   },
   {
     id: 2,
@@ -72,7 +94,33 @@ export const tempLeads = [
     dropped_at: null,
     converted_at: null,
     product_purchased: null,
-    payment_amount: null
+    payment_amount: null,
+    // Call tracking
+    total_calls: 3,
+    successful_calls: 0,
+    call_history: [
+      {
+        id: 1,
+        date: "2024-01-15T10:00:00Z",
+        outcome: "CNP",
+        reason: "Out of service",
+        made_by: "Admin User"
+      },
+      {
+        id: 2,
+        date: "2024-01-15T14:00:00Z",
+        outcome: "CNP",
+        reason: "Ringed not picked",
+        made_by: "Admin User"
+      },
+      {
+        id: 3,
+        date: "2024-01-16T09:00:00Z",
+        outcome: "CNP",
+        reason: "Invalid number",
+        made_by: "Admin User"
+      }
+    ]
   },
   {
     id: 3,

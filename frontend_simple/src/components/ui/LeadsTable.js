@@ -57,6 +57,7 @@ class LeadsTable {
             { key: 'phone', label: 'Phone', sortable: true },
             { key: 'status', label: 'Status', sortable: true },
             { key: 'interest', label: 'Interest', sortable: false },
+            { key: 'calls', label: 'Calls', sortable: false },
             { key: 'assignedTo', label: 'Assigned To', sortable: true },
             { key: 'lastUpdated', label: 'Last Updated', sortable: true },
             { key: 'actions', label: 'Actions', sortable: false }
@@ -104,7 +105,7 @@ class LeadsTable {
             
             const emptyCell = document.createElement('td');
             emptyCell.className = 'leads-table__empty-cell';
-            emptyCell.colSpan = 7;
+            emptyCell.colSpan = 8;
             emptyCell.setAttribute('data-testid', 'table-empty');
             
             const emptyState = new window.EmptyState({
@@ -151,6 +152,9 @@ class LeadsTable {
             lead: lead,
             onStatusChange: (lead, newStatus) => {
                 this.config.onStatusChange && this.config.onStatusChange(lead, newStatus);
+            },
+            onStatusSource: (lead, statusChange, source) => {
+                this.config.onStatusSource && this.config.onStatusSource(lead, statusChange, source);
             }
         });
         
@@ -164,10 +168,32 @@ class LeadsTable {
             lead: lead,
             onInterestChange: (lead, newLevel) => {
                 this.config.onInterestChange && this.config.onInterestChange(lead, newLevel);
+            },
+            onStatusSource: (lead, statusChange, source) => {
+                this.config.onStatusSource && this.config.onStatusSource(lead, statusChange, source);
             }
         });
         
         interestCell.appendChild(interestControl.render());
+        
+        // Calls cell
+        const callsCell = document.createElement('td');
+        callsCell.className = 'leads-table__cell leads-table__cell--calls';
+        
+        const totalCalls = lead.total_calls || 0;
+        const successfulCalls = lead.successful_calls || 0;
+        const callsText = totalCalls > 0 ? `${totalCalls} (${successfulCalls})` : '0';
+        
+        const callsButton = document.createElement('button');
+        callsButton.className = 'leads-table__calls-btn';
+        callsButton.textContent = callsText;
+        callsButton.title = 'View call history';
+        callsButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.config.onViewCallHistory && this.config.onViewCallHistory(lead);
+        });
+        
+        callsCell.appendChild(callsButton);
         
         // Assigned To cell
         const assignedCell = document.createElement('td');
@@ -179,30 +205,28 @@ class LeadsTable {
         updatedCell.className = 'leads-table__cell leads-table__cell--updated';
         updatedCell.textContent = this.formatRelativeTime(lead.lastUpdated);
         
-        // Actions cell with Stage 6 ActionButtons
+        // Actions cell with Call button
         const actionsCell = document.createElement('td');
         actionsCell.className = 'leads-table__cell leads-table__cell--actions';
         
-        const actionButtons = new window.ActionButtons({
-            lead: lead,
-            onCNP: (lead, reason) => {
-                this.config.onCNP && this.config.onCNP(lead, reason);
-            },
-            onConvert: (lead, data) => {
-                this.config.onConvert && this.config.onConvert(lead, data);
-            },
-            onDrop: (lead, data) => {
-                this.config.onDrop && this.config.onDrop(lead, data);
-            }
+        const callButton = document.createElement('button');
+        callButton.className = 'leads-table__call-btn';
+        callButton.innerHTML = 'Call 📞';
+        callButton.title = 'Make a call';
+        callButton.setAttribute('data-testid', 'call-btn');
+        callButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.config.onCallLead && this.config.onCallLead(lead);
         });
         
-        actionsCell.appendChild(actionButtons.render());
+        actionsCell.appendChild(callButton);
         
         // Assemble row
         row.appendChild(nameCell);
         row.appendChild(phoneCell);
         row.appendChild(statusCell);
         row.appendChild(interestCell);
+        row.appendChild(callsCell);
         row.appendChild(assignedCell);
         row.appendChild(updatedCell);
         row.appendChild(actionsCell);

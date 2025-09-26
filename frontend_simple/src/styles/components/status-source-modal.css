@@ -1,0 +1,77 @@
+/**
+ * Status Source Modal Component Styles
+ */
+.status-source-modal {
+    z-index: 10003;
+}
+
+.status-source__message {
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.status-source__message p {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.status-source__message p:last-child {
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.status-source__message strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.status-source__select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.status-source__select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.status-source__select:hover {
+    border-color: var(--primary-color);
+}
+
+/* Option styling */
+.status-source__select option {
+    padding: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .status-source__message {
+        padding: 12px;
+    }
+    
+    .status-source__message p {
+        font-size: 13px;
+    }
+    
+    .status-source__select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}

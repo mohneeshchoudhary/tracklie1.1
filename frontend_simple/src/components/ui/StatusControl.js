@@ -7,6 +7,7 @@ class StatusControl {
         this.config = {
             lead: config.lead || null,
             onStatusChange: config.onStatusChange || (() => {}),
+            onStatusSource: config.onStatusSource || (() => {}),
             ...config
         };
         
@@ -127,17 +128,50 @@ class StatusControl {
         this.showLoading();
         
         try {
+            // Show status source modal
+            this.showStatusSourceModal(newStatus);
+            
+        } catch (error) {
+            console.error('Error updating status:', error);
+            this.showError('Failed to update status');
+            this.isChanging = false;
+            this.hideLoading();
+            this.toggleDropdown();
+        }
+    }
+
+    showStatusSourceModal(newStatus) {
+        const modal = new window.StatusSourceModal({
+            lead: this.config.lead,
+            statusChange: newStatus,
+            onSourceSelect: (data) => {
+                this.handleStatusSourceSelect(data);
+            },
+            onClose: () => {
+                this.isChanging = false;
+                this.hideLoading();
+                this.toggleDropdown();
+            }
+        });
+        
+        document.body.appendChild(modal.render());
+        modal.show();
+    }
+
+    async handleStatusSourceSelect(data) {
+        try {
             // Call API to update status
-            await this.updateStatus(newStatus);
+            await this.updateStatus(data.statusChange);
             
             // Update local state
-            this.config.lead.status = newStatus;
+            this.config.lead.status = data.statusChange;
             
             // Update display
             this.updateDisplay();
             
             // Notify parent
-            this.config.onStatusChange(this.config.lead, newStatus);
+            this.config.onStatusChange(this.config.lead, data.statusChange);
+            this.config.onStatusSource(this.config.lead, data.statusChange, data.source);
             
             this.showSuccess('Status updated successfully');
             

@@ -7,6 +7,7 @@ class InterestControl {
         this.config = {
             lead: config.lead || null,
             onInterestChange: config.onInterestChange || (() => {}),
+            onStatusSource: config.onStatusSource || (() => {}),
             ...config
         };
         
@@ -107,6 +108,38 @@ class InterestControl {
         this.showLoading();
         
         try {
+            // Show status source modal
+            this.showStatusSourceModal(newLevel);
+            
+        } catch (error) {
+            console.error('Error updating interest level:', error);
+            this.showError('Failed to update interest level');
+            this.isChanging = false;
+            this.hideLoading();
+            this.toggleDropdown();
+        }
+    }
+
+    showStatusSourceModal(newLevel) {
+        const modal = new window.StatusSourceModal({
+            lead: this.config.lead,
+            statusChange: `Interest Level ${newLevel}`,
+            onSourceSelect: (data) => {
+                this.handleStatusSourceSelect(data, newLevel);
+            },
+            onClose: () => {
+                this.isChanging = false;
+                this.hideLoading();
+                this.toggleDropdown();
+            }
+        });
+        
+        document.body.appendChild(modal.render());
+        modal.show();
+    }
+
+    async handleStatusSourceSelect(data, newLevel) {
+        try {
             // Call API to update interest level
             await this.updateInterestLevel(newLevel);
             
@@ -118,6 +151,7 @@ class InterestControl {
             
             // Notify parent
             this.config.onInterestChange(this.config.lead, newLevel);
+            this.config.onStatusSource(this.config.lead, `Interest Level ${newLevel}`, data.source);
             
             this.showSuccess('Interest level updated successfully');
             

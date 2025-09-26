@@ -147,6 +147,10 @@ class LeadsPage {
             leads: this.getPaginatedLeads(),
             onLeadClick: (lead) => this.config.onLeadClick(lead),
             onStatusChange: (lead, newStatus) => this.handleStatusChange(lead, newStatus),
+            onStatusSource: (lead, statusChange, source) => this.handleStatusSource(lead, statusChange, source),
+            onInterestChange: (lead, newLevel) => this.handleInterestChange(lead, newLevel),
+            onCallLead: (lead) => this.openCallModal(lead),
+            onViewCallHistory: (lead) => this.openCallHistoryModal(lead),
             onEditLead: (lead) => this.openLeadModal('edit', lead),
             onDeleteLead: (leadId) => this.deleteLead(leadId)
         });
@@ -403,6 +407,93 @@ class LeadsPage {
             // Show success message
             this.showToast('Lead deleted successfully!', 'success');
         }
+    }
+
+    handleStatusSource(lead, statusChange, source) {
+        console.log(`Status source for ${lead.name}: ${statusChange} via ${source}`);
+        this.showToast(`Status change recorded: ${statusChange} via ${source}`, 'success');
+    }
+
+    handleInterestChange(lead, newLevel) {
+        console.log(`Interest level changed for ${lead.name}: ${newLevel}`);
+        this.showToast(`Interest level updated to ${newLevel}`, 'success');
+    }
+
+    openCallModal(lead) {
+        const modal = new window.CallModal({
+            lead: lead,
+            onCallOutcome: (callData) => this.handleCallOutcome(callData),
+            onClose: () => {
+                // Modal closed
+            }
+        });
+        
+        document.body.appendChild(modal.render());
+        modal.show();
+    }
+
+    handleCallOutcome(callData) {
+        const lead = callData.lead;
+        
+        // Update lead's call history
+        if (!lead.call_history) {
+            lead.call_history = [];
+        }
+        
+        // Add new call to history
+        const newCall = {
+            id: lead.call_history.length + 1,
+            date: callData.date,
+            outcome: callData.outcome,
+            made_by: this.config.user?.name || 'Current User'
+        };
+        
+        if (callData.outcome === 'CNP') {
+            newCall.reason = callData.reason;
+        } else if (callData.outcome === 'Picked') {
+            newCall.status_change = callData.status_change;
+            if (callData.interest_level) {
+                newCall.interest_level = callData.interest_level;
+                lead.interest_level = callData.interest_level;
+            }
+            if (callData.next_action) {
+                newCall.next_action = callData.next_action;
+            }
+            if (callData.next_call_date) {
+                newCall.next_call_date = callData.next_call_date;
+            }
+        }
+        
+        lead.call_history.push(newCall);
+        
+        // Update call counts
+        lead.total_calls = (lead.total_calls || 0) + 1;
+        if (callData.outcome === 'Picked') {
+            lead.successful_calls = (lead.successful_calls || 0) + 1;
+        }
+        
+        // Update status if changed
+        if (callData.status_change) {
+            lead.status = callData.status_change;
+        }
+        
+        // Refresh the table
+        this.applyFilters();
+        
+        // Show success message
+        this.showToast(`Call outcome recorded: ${callData.outcome}`, 'success');
+    }
+
+    openCallHistoryModal(lead) {
+        const modal = new window.CallHistoryModal({
+            lead: lead,
+            onClose: () => {
+                // Modal closed
+            }
+        });
+        
+        document.body.appendChild(modal.render());
+        modal.show();
     }
 
     showToast(message, type = 'info') {

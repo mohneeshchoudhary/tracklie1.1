@@ -29,6 +29,9 @@
 @import './components/status-control.css';
 @import './components/interest-control.css';
 @import './components/action-buttons.css';
+@import './components/call-modal.css';
+@import './components/call-history-modal.css';
+@import './components/status-source-modal.css';
 
 /* 5. Page Components */
 @import './pages/home.css';
