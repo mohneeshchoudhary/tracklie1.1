@@ -59,7 +59,7 @@
     border: 2px solid var(--primary-color);
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 9999;
     max-height: 200px;
     overflow-y: auto;
     margin-top: 4px;
@@ -69,12 +69,13 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 12px;
+    padding: 12px 16px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     border-bottom: 1px solid #e5e7eb;
     color: #374151;
     font-size: 14px;
+    font-weight: 500;
 }
 
 .status-control__option:last-child {
@@ -83,6 +84,7 @@
 
 .status-control__option:hover {
     background-color: #f3f4f6;
+    transform: translateX(2px);
 }
 
 .status-control__loading {

@@ -38,7 +38,15 @@ class StatusControl {
         const currentStatus = document.createElement('div');
         currentStatus.className = 'status-control__current';
         currentStatus.innerHTML = this.getStatusDisplay(this.config.lead.status);
-        currentStatus.addEventListener('click', () => this.toggleDropdown());
+        
+        // Only add click handler if status has options
+        const statusConfig = this.getStatusConfig(this.config.lead.status);
+        if (statusConfig.hasOptions) {
+            currentStatus.style.cursor = 'pointer';
+            currentStatus.addEventListener('click', () => this.toggleDropdown());
+        } else {
+            currentStatus.style.cursor = 'default';
+        }
         
         // Dropdown menu
         const dropdown = document.createElement('div');
@@ -77,29 +85,33 @@ class StatusControl {
         ];
     }
 
-    getStatusDisplay(status) {
+    getStatusConfig(status) {
         const statusConfig = {
-            'New': { color: '#0000FF', text: 'New' },
-            'In Progress': { color: '#FFD700', text: 'In Progress' },
-            'CNP': { color: '#808080', text: 'CNP' },
-            'Interested-1': { color: '#28C76F', text: 'Interested-1' },
-            'Interested-2': { color: '#28C76F', text: 'Interested-2' },
-            'Interested-3': { color: '#28C76F', text: 'Interested-3' },
-            'Interested-4': { color: '#28C76F', text: 'Interested-4' },
-            'Interested-5': { color: '#28C76F', text: 'Interested-5' },
-            'Qualified': { color: '#1E90FF', text: 'Qualified' },
-            'Converted': { color: '#006400', text: 'Converted' },
-            'Lost': { color: '#FF4D4F', text: 'Lost' },
-            'Dropped': { color: '#FF4D4F', text: 'Dropped' }
+            'New': { color: '#0000FF', text: 'New', hasOptions: true },
+            'In Progress': { color: '#FFD700', text: 'In Progress', hasOptions: true },
+            'CNP': { color: '#808080', text: 'CNP', hasOptions: true },
+            'Interested-1': { color: '#28C76F', text: 'Interested-1', hasOptions: true },
+            'Interested-2': { color: '#28C76F', text: 'Interested-2', hasOptions: true },
+            'Interested-3': { color: '#28C76F', text: 'Interested-3', hasOptions: true },
+            'Interested-4': { color: '#28C76F', text: 'Interested-4', hasOptions: true },
+            'Interested-5': { color: '#28C76F', text: 'Interested-5', hasOptions: true },
+            'Qualified': { color: '#1E90FF', text: 'Qualified', hasOptions: true },
+            'Converted': { color: '#006400', text: 'Converted', hasOptions: false },
+            'Lost': { color: '#FF4D4F', text: 'Lost', hasOptions: false },
+            'Dropped': { color: '#FF4D4F', text: 'Dropped', hasOptions: false }
         };
         
-        const config = statusConfig[status] || { color: '#666', text: status };
+        return statusConfig[status] || { color: '#666', text: status, hasOptions: true };
+    }
+
+    getStatusDisplay(status) {
+        const config = this.getStatusConfig(status);
         
         return `
             <span class="status-control__badge" style="background-color: ${config.color}">
                 ${config.text}
             </span>
-            <span class="status-control__arrow">▼</span>
+            ${config.hasOptions ? '<span class="status-control__arrow">▼</span>' : ''}
         `;
     }
 
