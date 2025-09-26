@@ -64,6 +64,9 @@ class TracklieApp {
       onNavigate: this.handleNavigation.bind(this)
     });
     
+    // Make mainLayout globally accessible for debugging and testing
+    window.mainLayout = this.mainLayout;
+    
     // Insert into DOM
     const appContainer = document.getElementById('app');
     if (appContainer) {

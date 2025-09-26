@@ -19,6 +19,7 @@ class MainLayout {
     this.topbar = null;
     this.contentArea = null;
     this.currentPage = null;
+    this.dashboardPage = null;
     this.init();
   }
   
@@ -68,7 +69,21 @@ class MainLayout {
   }
   
   initializeComponents() {
-    // Components are already initialized in createElement
+    // Create home page
+    if (window.HomePage) {
+      this.homePage = new window.HomePage();
+    } else {
+      console.error('HomePage not available');
+      this.homePage = null;
+    }
+    
+    // Create dashboard page
+    if (window.DashboardPage) {
+      this.dashboardPage = new window.DashboardPage();
+    } else {
+      console.error('DashboardPage not available');
+      this.dashboardPage = null;
+    }
   }
   
   handleNavigation(navItem) {
@@ -87,9 +102,24 @@ class MainLayout {
       this.currentPage.destroy();
     }
     
-    // Create new page
-    const pageConfig = PAGE_CONFIGS[pageId] || PAGE_CONFIGS.dashboard;
-    this.currentPage = new PagePlaceholder(pageConfig);
+    // Create new page based on type
+    if (pageId === 'home' || pageId === '') {
+      // Use home page
+      this.currentPage = this.homePage;
+    } else if (pageId === 'dashboard') {
+      // Use role-aware dashboard
+      this.currentPage = this.dashboardPage;
+    } else {
+      // Use placeholder for other pages
+      const pageConfig = PAGE_CONFIGS[pageId] || PAGE_CONFIGS.dashboard;
+      this.currentPage = new PagePlaceholder(pageConfig);
+    }
+    
+    // Ensure currentPage exists before proceeding
+    if (!this.currentPage) {
+      console.error('Failed to create page for:', pageId);
+      return;
+    }
     
     // Insert into page container
     const pageContainer = this.element.querySelector('.main-layout__page');
@@ -102,15 +132,17 @@ class MainLayout {
   
   handleInitialRoute() {
     const hash = window.location.hash.replace('#', '');
-    const pageId = hash || 'dashboard';
+    const pageId = hash || 'home';
     this.navigateToPage(pageId);
+    this.sidebar.setActiveItem(pageId);
+    this.topbar.updatePageTitle(this.getPageTitle(pageId));
   }
   
   attachEventListeners() {
     // Listen for hash changes
     window.addEventListener('hashchange', () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash && hash !== this.currentPage?.config.pageId) {
+      if (hash && hash !== this.currentPage?.config?.pageId) {
         this.navigateToPage(hash);
       }
     });
@@ -123,8 +155,9 @@ class MainLayout {
     });
   }
   
-  getPageTitleFromHash(hash) {
+  getPageTitle(pageId) {
     const titleMap = {
+      'home': 'Home',
       'dashboard': 'Dashboard',
       'leads': 'Leads',
       'followups': 'Follow-ups',
@@ -132,20 +165,30 @@ class MainLayout {
       'reports': 'Reports'
     };
     
-    return titleMap[hash] || 'Dashboard';
+    return titleMap[pageId] || 'Home';
+  }
+
+  getPageTitleFromHash(hash) {
+    return this.getPageTitle(hash);
   }
   
   updateUserInfo(userInfo) {
     this.config.user = { ...this.config.user, ...userInfo };
     
     // Update sidebar user info
-    const userName = this.sidebar.getElement().querySelector('.sidebar__user-name');
-    const userRole = this.sidebar.getElement().querySelector('.sidebar__user-role');
-    const userAvatar = this.sidebar.getElement().querySelector('.sidebar__user-avatar');
+    if (this.sidebar) {
+      this.sidebar.updateUserInfo(userInfo);
+    }
     
-    if (userName) userName.textContent = userInfo.name || this.config.user.name;
-    if (userRole) userRole.textContent = userInfo.role || this.config.user.role;
-    if (userAvatar) userAvatar.textContent = userInfo.avatar || this.config.user.avatar;
+    // Update home page if it's the current page
+    if (this.homePage && this.currentPage === this.homePage) {
+      this.homePage.updateUserInfo(userInfo);
+    }
+    
+    // Update dashboard if it's the current page
+    if (this.dashboardPage && this.currentPage === this.dashboardPage) {
+      this.dashboardPage.updateUserInfo(userInfo);
+    }
   }
   
   updateSidebarBadge(itemId, badge) {

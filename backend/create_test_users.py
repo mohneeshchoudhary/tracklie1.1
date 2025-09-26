@@ -55,6 +55,24 @@ def create_test_users():
                 "password": "finance123",
                 "name": "Finance Manager",
                 "role": UserRole.FINANCE_MANAGER
+            },
+            {
+                "email": "teamlead@tracklie.com",
+                "password": "teamlead123",
+                "name": "Team Lead",
+                "role": UserRole.TEAM_LEAD
+            },
+            {
+                "email": "analyst@tracklie.com",
+                "password": "analyst123",
+                "name": "Data Analyst",
+                "role": UserRole.ANALYST
+            },
+            {
+                "email": "superadmin@tracklie.com",
+                "password": "superadmin123",
+                "name": "Super Admin",
+                "role": UserRole.SUPER_ADMIN
             }
         ]
         

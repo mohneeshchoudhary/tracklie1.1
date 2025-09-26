@@ -227,6 +227,7 @@ class Topbar {
   
   getPageTitleFromHash(hash) {
     const titleMap = {
+      'home': 'Home',
       'dashboard': 'Dashboard',
       'leads': 'Leads',
       'followups': 'Follow-ups',
@@ -234,7 +235,7 @@ class Topbar {
       'reports': 'Reports'
     };
     
-    return titleMap[hash] || 'Dashboard';
+    return titleMap[hash] || 'Home';
   }
   
   getElement() {
