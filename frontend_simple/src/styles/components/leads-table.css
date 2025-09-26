@@ -15,6 +15,7 @@
     width: 100%;
     border-collapse: collapse;
     background: var(--color-background);
+    overflow: visible;
 }
 
 .leads-table__header {
@@ -135,6 +136,16 @@
 .leads-table__cell--status {
     text-align: center;
     width: 120px;
+    overflow: visible;
+    position: relative;
+}
+
+/* Interest column */
+.leads-table__cell--interest {
+    text-align: center;
+    width: 100px;
+    overflow: visible;
+    position: relative;
 }
 
 /* Assigned column */

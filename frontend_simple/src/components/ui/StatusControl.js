@@ -132,7 +132,17 @@ class StatusControl {
         
         const dropdown = this.element.querySelector('.status-control__dropdown');
         const isVisible = dropdown.style.display !== 'none';
-        dropdown.style.display = isVisible ? 'none' : 'block';
+        
+        if (isVisible) {
+            dropdown.style.display = 'none';
+        } else {
+            // Position the dropdown using fixed positioning
+            const rect = this.element.getBoundingClientRect();
+            dropdown.style.display = 'block';
+            dropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+            dropdown.style.left = rect.left + 'px';
+            dropdown.style.right = 'auto';
+        }
     }
 
     async handleStatusChange(newStatus) {

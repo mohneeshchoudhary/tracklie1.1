@@ -51,18 +51,15 @@
 }
 
 .status-control__dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+    position: fixed;
     background: #ffffff;
     border: 2px solid var(--primary-color);
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
+    z-index: 99999;
     max-height: 200px;
     overflow-y: auto;
-    margin-top: 4px;
+    min-width: 150px;
 }
 
 .status-control__option {
