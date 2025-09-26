@@ -140,8 +140,8 @@ class LeadsPage {
         const tableSection = document.createElement('div');
         tableSection.className = 'leads-page__table-section';
         
-        // Initialize with all leads
-        this.filteredLeads = window.mockLeads || [];
+        // Initialize with temp data for frontend development
+        this.filteredLeads = window.tempLeads || window.mockLeads || [];
         
         this.leadsTable = new window.LeadsTable({
             leads: this.getPaginatedLeads(),
@@ -201,11 +201,19 @@ class LeadsPage {
     }
 
     handleStatusChange(lead, newStatus) {
-        // Update lead status in mock data
-        const leadIndex = window.mockLeads.findIndex(l => l.id === lead.id);
-        if (leadIndex !== -1) {
-            window.mockLeads[leadIndex].status = newStatus;
-            window.mockLeads[leadIndex].lastUpdated = new Date().toISOString();
+        // Update lead status in temp data
+        if (window.tempLeads) {
+            const leadIndex = window.tempLeads.findIndex(l => l.id === lead.id);
+            if (leadIndex !== -1) {
+                window.tempLeads[leadIndex].status = newStatus;
+                window.tempLeads[leadIndex].updated_at = new Date().toISOString();
+            }
+        } else if (window.mockLeads) {
+            const leadIndex = window.mockLeads.findIndex(l => l.id === lead.id);
+            if (leadIndex !== -1) {
+                window.mockLeads[leadIndex].status = newStatus;
+                window.mockLeads[leadIndex].lastUpdated = new Date().toISOString();
+            }
         }
         
         // Reapply filters and update table
@@ -216,7 +224,7 @@ class LeadsPage {
     }
 
     applyFilters() {
-        let filtered = window.mockLeads || [];
+        let filtered = window.tempLeads || window.mockLeads || [];
         
         // Apply search filter
         if (this.filters.search) {
@@ -241,7 +249,7 @@ class LeadsPage {
         // Apply date filter
         if (this.filters.startDate || this.filters.endDate) {
             filtered = filtered.filter(lead => {
-                const leadDate = new Date(lead.lastUpdated);
+                const leadDate = new Date(lead.created_at);
                 const startDate = this.filters.startDate ? new Date(this.filters.startDate) : null;
                 const endDate = this.filters.endDate ? new Date(this.filters.endDate) : null;
                 
@@ -326,9 +334,15 @@ class LeadsPage {
         // Generate new ID
         const newId = Date.now().toString();
         leadData.id = newId;
+        leadData.created_at = new Date().toISOString();
+        leadData.updated_at = new Date().toISOString();
+        leadData.created_by = this.config.user?.id || 1;
+        leadData.assigned_to = null;
         
-        // Add to mock data
-        if (window.mockLeads) {
+        // Add to temp data
+        if (window.tempLeads) {
+            window.tempLeads.unshift(leadData);
+        } else if (window.mockLeads) {
             window.mockLeads.unshift(leadData);
         }
         
@@ -343,8 +357,15 @@ class LeadsPage {
     }
 
     updateLead(leadData) {
-        // Update in mock data
-        if (window.mockLeads) {
+        leadData.updated_at = new Date().toISOString();
+        
+        // Update in temp data
+        if (window.tempLeads) {
+            const index = window.tempLeads.findIndex(lead => lead.id === leadData.id);
+            if (index !== -1) {
+                window.tempLeads[index] = { ...window.tempLeads[index], ...leadData };
+            }
+        } else if (window.mockLeads) {
             const index = window.mockLeads.findIndex(lead => lead.id === leadData.id);
             if (index !== -1) {
                 window.mockLeads[index] = { ...window.mockLeads[index], ...leadData };
@@ -363,8 +384,13 @@ class LeadsPage {
 
     deleteLead(leadId) {
         if (confirm('Are you sure you want to delete this lead?')) {
-            // Remove from mock data
-            if (window.mockLeads) {
+            // Remove from temp data
+            if (window.tempLeads) {
+                const index = window.tempLeads.findIndex(lead => lead.id === leadId);
+                if (index !== -1) {
+                    window.tempLeads.splice(index, 1);
+                }
+            } else if (window.mockLeads) {
                 const index = window.mockLeads.findIndex(lead => lead.id === leadId);
                 if (index !== -1) {
                     window.mockLeads.splice(index, 1);

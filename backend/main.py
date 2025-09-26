@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 from core.database import engine, Base
 from api.auth import router as auth_router
+from api.leads import router as leads_router
 
 # Load environment variables
 load_dotenv()
@@ -37,6 +38,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(auth_router)
+app.include_router(leads_router)
 
 # Health check endpoint
 @app.get("/")

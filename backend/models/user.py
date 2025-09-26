@@ -34,5 +34,9 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     last_login = Column(DateTime(timezone=True), nullable=True)
 
+    # Relationships
+    created_leads = relationship("Lead", foreign_keys="Lead.created_by", back_populates="creator")
+    assigned_leads = relationship("Lead", foreign_keys="Lead.assigned_to", back_populates="assignee")
+
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', role='{self.role}')>"
