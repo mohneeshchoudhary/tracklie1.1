@@ -27,22 +27,28 @@ class AuthContext {
             const storedUser = window.AuthService.getStoredUser();
             
             if (storedUser) {
-                window.Logger?.debug('Found stored user, verifying token');
+                window.Logger?.debug('Found stored user, checking backend availability');
                 
-                // Verify token is still valid with timeout
-                try {
-                    const user = await Promise.race([
-                        window.AuthService.verifyAuth(),
-                        new Promise((_, reject) => 
-                            setTimeout(() => reject(new Error('Auth verification timeout')), 5000)
-                        )
-                    ]);
-                    this.setUser(user);
-                    window.Logger?.info('User authentication verified successfully');
-                } catch (error) {
-                    window.Logger?.warn('Auth verification failed', { error: error.message });
-                    // Token is invalid, clear stored data
-                    this.clearAuth();
+                // For frontend demo, if backend is not available, use stored user
+                if (window.AuthService.isBackendAvailable === false) {
+                    window.Logger?.info('Backend not available, using stored user for demo');
+                    this.setUser(storedUser);
+                } else {
+                    // Try to verify with backend, but don't fail if backend is unavailable
+                    try {
+                        const user = await Promise.race([
+                            window.AuthService.verifyAuth(),
+                            new Promise((_, reject) => 
+                                setTimeout(() => reject(new Error('Auth verification timeout')), 3000)
+                            )
+                        ]);
+                        this.setUser(user);
+                        window.Logger?.info('User authentication verified successfully');
+                    } catch (error) {
+                        window.Logger?.warn('Auth verification failed, using stored user for demo', { error: error.message });
+                        // For demo purposes, use stored user even if verification fails
+                        this.setUser(storedUser);
+                    }
                 }
             } else {
                 window.Logger?.debug('No stored user found');
