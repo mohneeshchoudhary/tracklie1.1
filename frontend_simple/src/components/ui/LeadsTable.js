@@ -57,7 +57,8 @@ class LeadsTable {
             { key: 'phone', label: 'Phone', sortable: true },
             { key: 'status', label: 'Status', sortable: true },
             { key: 'assignedTo', label: 'Assigned To', sortable: true },
-            { key: 'lastUpdated', label: 'Last Updated', sortable: true }
+            { key: 'lastUpdated', label: 'Last Updated', sortable: true },
+            { key: 'actions', label: 'Actions', sortable: false }
         ];
         
         headers.forEach(header => {
@@ -164,12 +165,44 @@ class LeadsTable {
         updatedCell.className = 'leads-table__cell leads-table__cell--updated';
         updatedCell.textContent = this.formatRelativeTime(lead.lastUpdated);
         
+        // Actions cell
+        const actionsCell = document.createElement('td');
+        actionsCell.className = 'leads-table__cell leads-table__cell--actions';
+        
+        const actionsContainer = document.createElement('div');
+        actionsContainer.className = 'leads-table__actions';
+        
+        // Edit button
+        const editBtn = document.createElement('button');
+        editBtn.className = 'leads-table__action-btn leads-table__action-btn--edit';
+        editBtn.innerHTML = '✏️';
+        editBtn.title = 'Edit Lead';
+        editBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.config.onEditLead && this.config.onEditLead(lead);
+        });
+        
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'leads-table__action-btn leads-table__action-btn--delete';
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.title = 'Delete Lead';
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.config.onDeleteLead && this.config.onDeleteLead(lead.id);
+        });
+        
+        actionsContainer.appendChild(editBtn);
+        actionsContainer.appendChild(deleteBtn);
+        actionsCell.appendChild(actionsContainer);
+        
         // Assemble row
         row.appendChild(nameCell);
         row.appendChild(phoneCell);
         row.appendChild(statusCell);
         row.appendChild(assignedCell);
         row.appendChild(updatedCell);
+        row.appendChild(actionsCell);
         
         // Add click handler
         row.addEventListener('click', () => {

@@ -1,0 +1,222 @@
+/* Lead Modal Styles */
+.lead-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    animation: leadModalFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes leadModalFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.lead-modal__content {
+    background: var(--color-surface);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    animation: leadModalSlideIn 0.3s ease-out forwards;
+}
+
+@keyframes leadModalSlideIn {
+    to {
+        transform: scale(1);
+    }
+}
+
+.lead-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.lead-modal__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.lead-modal__close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.lead-modal__close:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+}
+
+.lead-modal__form {
+    padding: 32px;
+}
+
+.lead-modal__section {
+    margin-bottom: 32px;
+}
+
+.lead-modal__section:last-child {
+    margin-bottom: 0;
+}
+
+.lead-modal__section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 20px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.lead-modal__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.lead-modal__field {
+    display: flex;
+    flex-direction: column;
+}
+
+.lead-modal__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+}
+
+.lead-modal__required {
+    color: var(--color-danger);
+}
+
+.lead-modal__input,
+.lead-modal__select,
+.lead-modal__textarea {
+    padding: 12px 16px;
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    transition: all 0.2s ease;
+}
+
+.lead-modal__input:focus,
+.lead-modal__select:focus,
+.lead-modal__textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.lead-modal__input:disabled,
+.lead-modal__select:disabled,
+.lead-modal__textarea:disabled {
+    background: var(--color-surface-disabled);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+}
+
+.lead-modal__textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.lead-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 24px 32px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface-secondary);
+    border-radius: 0 0 16px 16px;
+}
+
+.lead-modal__btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+}
+
+.lead-modal__btn--primary {
+    background: var(--color-primary);
+    color: white;
+}
+
+.lead-modal__btn--primary:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-1px);
+}
+
+.lead-modal__btn--secondary {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border);
+}
+
+.lead-modal__btn--secondary:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .lead-modal__content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .lead-modal__header,
+    .lead-modal__form,
+    .lead-modal__footer {
+        padding: 20px;
+    }
+    
+    .lead-modal__fields {
+        grid-template-columns: 1fr;
+    }
+    
+    .lead-modal__footer {
+        flex-direction: column;
+    }
+    
+    .lead-modal__btn {
+        width: 100%;
+    }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .lead-modal__content {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+}

@@ -229,6 +229,52 @@
     50% { opacity: 0.5; }
 }
 
+/* Action buttons */
+.leads-table__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.leads-table__action-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.leads-table__action-btn--edit {
+    color: var(--color-primary);
+}
+
+.leads-table__action-btn--edit:hover {
+    background: rgba(99, 102, 241, 0.1);
+    transform: scale(1.1);
+}
+
+.leads-table__action-btn--delete {
+    color: var(--color-danger);
+}
+
+.leads-table__action-btn--delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+.leads-table__cell--actions {
+    width: 100px;
+    text-align: center;
+}
+
 /* Empty state in table */
 .leads-table__empty-cell .empty-state {
     background: transparent;

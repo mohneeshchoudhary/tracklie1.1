@@ -71,7 +71,7 @@ class LeadsPage {
         addButton.setAttribute('data-testid', 'add-lead-btn');
         
         addButton.addEventListener('click', () => {
-            this.config.onAddLead();
+            this.openLeadModal('create');
         });
         
         header.appendChild(title);
@@ -146,7 +146,9 @@ class LeadsPage {
         this.leadsTable = new window.LeadsTable({
             leads: this.getPaginatedLeads(),
             onLeadClick: (lead) => this.config.onLeadClick(lead),
-            onStatusChange: (lead, newStatus) => this.handleStatusChange(lead, newStatus)
+            onStatusChange: (lead, newStatus) => this.handleStatusChange(lead, newStatus),
+            onEditLead: (lead) => this.openLeadModal('edit', lead),
+            onDeleteLead: (leadId) => this.deleteLead(leadId)
         });
         
         tableSection.appendChild(this.leadsTable.render());
@@ -294,6 +296,113 @@ class LeadsPage {
     }
     return this.element;
   }
+
+    // CRUD Methods
+    openLeadModal(mode, lead = null) {
+        const modal = new window.LeadModal({
+            mode: mode,
+            lead: lead,
+            userRole: this.config.user?.role || 'admin',
+            onSave: (leadData) => this.handleSaveLead(leadData),
+            onCancel: () => {
+                // Modal will close itself
+            }
+        });
+        
+        modal.open();
+    }
+
+    handleSaveLead(leadData) {
+        if (leadData.id) {
+            // Update existing lead
+            this.updateLead(leadData);
+        } else {
+            // Create new lead
+            this.createLead(leadData);
+        }
+    }
+
+    createLead(leadData) {
+        // Generate new ID
+        const newId = Date.now().toString();
+        leadData.id = newId;
+        
+        // Add to mock data
+        if (window.mockLeads) {
+            window.mockLeads.unshift(leadData);
+        }
+        
+        // Refresh the table
+        this.applyFilters();
+        
+        // Show success message
+        this.showToast('Lead created successfully!', 'success');
+        
+        // Notify parent component
+        this.config.onAddLead && this.config.onAddLead(leadData);
+    }
+
+    updateLead(leadData) {
+        // Update in mock data
+        if (window.mockLeads) {
+            const index = window.mockLeads.findIndex(lead => lead.id === leadData.id);
+            if (index !== -1) {
+                window.mockLeads[index] = { ...window.mockLeads[index], ...leadData };
+            }
+        }
+        
+        // Refresh the table
+        this.applyFilters();
+        
+        // Show success message
+        this.showToast('Lead updated successfully!', 'success');
+        
+        // Notify parent component
+        this.config.onStatusChange && this.config.onStatusChange(leadData, leadData.status);
+    }
+
+    deleteLead(leadId) {
+        if (confirm('Are you sure you want to delete this lead?')) {
+            // Remove from mock data
+            if (window.mockLeads) {
+                const index = window.mockLeads.findIndex(lead => lead.id === leadId);
+                if (index !== -1) {
+                    window.mockLeads.splice(index, 1);
+                }
+            }
+            
+            // Refresh the table
+            this.applyFilters();
+            
+            // Show success message
+            this.showToast('Lead deleted successfully!', 'success');
+        }
+    }
+
+    showToast(message, type = 'info') {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${type}`;
+        toast.textContent = message;
+        
+        // Add to page
+        document.body.appendChild(toast);
+        
+        // Show toast
+        setTimeout(() => {
+            toast.classList.add('toast--show');
+        }, 100);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.classList.remove('toast--show');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
 
     destroy() {
         if (this.searchInput) this.searchInput.destroy();

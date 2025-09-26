@@ -23,6 +23,12 @@ class PaginationBar {
         this.element.className = 'pagination-bar';
         this.element.setAttribute('data-testid', 'pagination-bar');
         
+        this.createContent();
+        
+        return this.element;
+    }
+
+    createContent() {
         // Info section
         if (this.config.showInfo) {
             const info = document.createElement('div');
@@ -92,8 +98,6 @@ class PaginationBar {
                 }
             }
         });
-        
-        return this.element;
     }
 
     getInfoText() {
@@ -164,7 +168,7 @@ class PaginationBar {
         } else {
             // Update existing element
             this.element.innerHTML = '';
-            this.createElement();
+            this.createContent();
         }
         return this.element;
     }

@@ -22,6 +22,7 @@
 @import './components/pagination-bar.css';
 @import './components/empty-state.css';
 @import './components/leads-table.css';
+@import './components/lead-modal.css';
 @import './components/login-modal.css';
 @import './components/toast.css';
 
