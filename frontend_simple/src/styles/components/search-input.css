@@ -1,0 +1,102 @@
+/* Search Input Component Styles */
+
+.search-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    transition: all 0.2s ease-in-out;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.search-input:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(115, 93, 255, 0.1);
+    background: var(--color-background);
+}
+
+.search-input__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--spacing-sm);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    pointer-events: none;
+}
+
+.search-input__field {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-family: inherit;
+    padding: 0;
+}
+
+.search-input__field::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+.search-input__clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    transition: all 0.2s ease-in-out;
+    margin-left: var(--spacing-sm);
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.search-input__clear:hover {
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    transform: scale(1.1);
+}
+
+/* Size variants */
+.search-input--small {
+    padding: var(--spacing-xs);
+    min-width: 150px;
+    max-width: 200px;
+}
+
+.search-input--small .search-input__field {
+    font-size: var(--font-size-xs);
+}
+
+.search-input--large {
+    padding: var(--spacing-md);
+    min-width: 250px;
+    max-width: 400px;
+}
+
+.search-input--large .search-input__field {
+    font-size: var(--font-size-md);
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+    .search-input {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .search-input:focus-within {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--color-primary);
+    }
+}

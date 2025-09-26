@@ -251,8 +251,11 @@ class Topbar {
       this.config.welcomeMessage = 'Welcome! Please login to access features.';
     }
     
-    // Re-render the topbar
-    this.render();
+    // Update the welcome message in the DOM
+    const welcomeElement = this.element.querySelector('.topbar__welcome');
+    if (welcomeElement) {
+      welcomeElement.textContent = this.config.welcomeMessage;
+    }
   }
 
   getElement() {

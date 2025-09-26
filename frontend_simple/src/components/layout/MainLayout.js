@@ -108,10 +108,44 @@ class MainLayout {
       return this.homePage;
     } else if (pageId === 'dashboard') {
       return this.dashboardPage;
+    } else if (pageId === 'leads') {
+      return this.getLeadsPage();
     } else {
       // Lazy load page components
       return this.lazyLoadPage(pageId);
     }
+  }
+
+  getLeadsPage() {
+    // Check if leads page is already cached
+    if (this.pageCache && this.pageCache.leads) {
+      return this.pageCache.leads;
+    }
+
+    // Create leads page instance
+    const leadsPage = new window.LeadsPage({
+      user: this.config.user,
+      onLeadClick: (lead) => {
+        console.log('Lead clicked:', lead);
+        // TODO: Open lead details modal or navigate to lead detail page
+      },
+      onAddLead: () => {
+        console.log('Add lead clicked');
+        // TODO: Open add lead modal
+      },
+      onStatusChange: (lead, newStatus) => {
+        console.log('Lead status changed:', lead.name, 'to', newStatus);
+        // TODO: Update lead status via API
+      }
+    });
+    
+    // Cache the page instance
+    if (!this.pageCache) {
+      this.pageCache = {};
+    }
+    this.pageCache.leads = leadsPage;
+    
+    return leadsPage;
   }
 
   lazyLoadPage(pageId) {
@@ -180,7 +214,16 @@ class MainLayout {
                 // Insert into page container
                 const pageContainer = this.element.querySelector('.main-layout__page');
                 pageContainer.innerHTML = '';
-                pageContainer.appendChild(this.currentPage.getElement());
+                
+                // Check if currentPage has getElement method
+                if (this.currentPage && typeof this.currentPage.getElement === 'function') {
+                  pageContainer.appendChild(this.currentPage.getElement());
+                } else if (this.currentPage && this.currentPage.element) {
+                  // Fallback: use element property directly
+                  pageContainer.appendChild(this.currentPage.element);
+                } else {
+                  console.error('Current page does not have getElement method or element property:', this.currentPage);
+                }
                 
                 // Update URL hash
                 window.location.hash = pageId;

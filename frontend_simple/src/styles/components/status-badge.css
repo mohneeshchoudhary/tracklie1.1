@@ -1,0 +1,120 @@
+/* Status Badge Component Styles */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    white-space: nowrap;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Size variants */
+.status-badge--small {
+    padding: 2px var(--spacing-xs);
+    font-size: 10px;
+    min-height: 18px;
+}
+
+.status-badge--medium {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    min-height: 22px;
+}
+
+.status-badge--large {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    min-height: 28px;
+}
+
+/* Status color variants */
+.status-badge--new {
+    background: linear-gradient(135deg, #0000FF, #4A90E2);
+    color: white;
+    border-color: #0000FF;
+    box-shadow: 0 2px 8px rgba(0, 0, 255, 0.3);
+}
+
+.status-badge--in-progress {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #333;
+    border-color: #FFD700;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.status-badge--cnp {
+    background: linear-gradient(135deg, #B5B5B5, #8E8E8E);
+    color: white;
+    border-color: #B5B5B5;
+    box-shadow: 0 2px 8px rgba(181, 181, 181, 0.3);
+}
+
+.status-badge--interested-3 {
+    background: linear-gradient(135deg, #FFA500, #FF8C00);
+    color: white;
+    border-color: #FFA500;
+    box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+}
+
+.status-badge--interested-4,
+.status-badge--interested-5 {
+    background: linear-gradient(135deg, #28C76F, #20B2AA);
+    color: white;
+    border-color: #28C76F;
+    box-shadow: 0 2px 8px rgba(40, 199, 111, 0.3);
+}
+
+.status-badge--converted {
+    background: linear-gradient(135deg, #006400, #228B22);
+    color: white;
+    border-color: #006400;
+    box-shadow: 0 2px 8px rgba(0, 100, 0, 0.3);
+}
+
+.status-badge--lost {
+    background: linear-gradient(135deg, #FF4D4F, #DC143C);
+    color: white;
+    border-color: #FF4D4F;
+    box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+}
+
+/* Hover effects */
+.status-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Shimmer effect for active statuses */
+.status-badge--new::before,
+.status-badge--interested-4::before,
+.status-badge--interested-5::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+    .status-badge--in-progress {
+        color: #000;
+    }
+}
