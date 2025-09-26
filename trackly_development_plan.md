@@ -5,24 +5,25 @@
 | **0** | **✅ Prerequisites & Setup** | **Tech stack, folder structure, color theme, modularity** |
 | **1** | **✅ Project Layout + Navigation Shell** | **Fixed sidebar, topbar, routing, placeholder pages** |
 | **2** | **✅ Authentication & Role-Based Access** | **JWT login/logout, session-based, role guards** |
-| **3** | **Lead Management (CRUD, Status, Source, Drop, Restore)** | **End-to-end lead lifecycle including soft delete** |
-| **4** | **Follow-Up Scheduling \+ Alerts** | **Schedule follow-ups, missed status, pause reasons** |
-| **5** | **Payments Flow (Post-Conversion Only)** | **Manual payments, installment tracking, badges** |
-| **6** | **Dashboard Widgets (Role-Based Stats)** | **Personalized metrics for Sales, Admin, Recovery** |
-| **7** | **Lead Profile View (Side Drawer)** | **One-click drawer with all lead details, status, logs** |
-| **8** | **Notifications Panel \+ Email Alerts (Internal)** | **Bell icon, unread count, internal email triggers** |
-| **9** | **Reporting \+ Filters \+ CSV Export** | **Admin/analyst dashboard, lead/payment tab, export** |
-| **10** | **Soft Delete \+ Restore \+ Audit Trail** | **Deleted view, timeline log, restore with reason** |
-| **11** | **Settings & Config (Sources, Follow-Up Reasons, Timings)** | **Admin-managed dropdowns and system-wide config** |
-| **12** | **Roles & Permissions UI (Admin Controls)** | **View/change user roles, static permission matrix** |
-| **13** | **Attendance Module (Check-In / Pause Tracking)** | **Check-in/out \+ pause reasons, used in lead routing** |
-| **14** | **Final Selenium Test Suite \+ Regression Run** | **Test all core flows: auth, lead, follow-up, dashboard** |
-| **15** | **Pre-Deployment QA \+ Build Checklist** | **Secrets, env vars, build/test/deploy verification** |
-| **16** | **Access Control & Security Validation** | **Frontend & backend route protection by role** |
-| **17** | **UAT \+ Client Readiness Verification** | **Final review of permissions, edge cases, and staging** |
-| **18** | **Post-Go-Live Tools (Logs, Flags, Versioning, Cron Prep)** | **Future support tools – admin flags, version info, system logs** |
-| **19** | **Performance Optimization (Caching, Lazy Loading)** | **Code splitting, Redis caching, database optimization, monitoring** |
-| **20** | **Real-time Features (WebSocket Notifications)** | **Live notifications, dashboard updates, collaborative indicators** |
+| **3** | **✅ User Roles + Sidebar Control + Dashboard Shells** | **Role-based navigation, dynamic dashboards, sidebar fixes** |
+| **4** | **Lead Management (CRUD, Status, Source, Drop, Restore)** | **End-to-end lead lifecycle including soft delete** |
+| **5** | **Follow-Up Scheduling \+ Alerts** | **Schedule follow-ups, missed status, pause reasons** |
+| **6** | **Payments Flow (Post-Conversion Only)** | **Manual payments, installment tracking, badges** |
+| **7** | **Dashboard Widgets (Role-Based Stats)** | **Personalized metrics for Sales, Admin, Recovery** |
+| **8** | **Lead Profile View (Side Drawer)** | **One-click drawer with all lead details, status, logs** |
+| **9** | **Notifications Panel \+ Email Alerts (Internal)** | **Bell icon, unread count, internal email triggers** |
+| **10** | **Reporting \+ Filters \+ CSV Export** | **Admin/analyst dashboard, lead/payment tab, export** |
+| **11** | **Soft Delete \+ Restore \+ Audit Trail** | **Deleted view, timeline log, restore with reason** |
+| **12** | **Settings & Config (Sources, Follow-Up Reasons, Timings)** | **Admin-managed dropdowns and system-wide config** |
+| **13** | **Roles & Permissions UI (Admin Controls)** | **View/change user roles, static permission matrix** |
+| **14** | **Attendance Module (Check-In / Pause Tracking)** | **Check-in/out \+ pause reasons, used in lead routing** |
+| **15** | **Final Selenium Test Suite \+ Regression Run** | **Test all core flows: auth, lead, follow-up, dashboard** |
+| **16** | **Pre-Deployment QA \+ Build Checklist** | **Secrets, env vars, build/test/deploy verification** |
+| **17** | **Access Control & Security Validation** | **Frontend & backend route protection by role** |
+| **18** | **UAT \+ Client Readiness Verification** | **Final review of permissions, edge cases, and staging** |
+| **19** | **Post-Go-Live Tools (Logs, Flags, Versioning, Cron Prep)** | **Future support tools – admin flags, version info, system logs** |
+| **20** | **Performance Optimization (Caching, Lazy Loading)** | **Code splitting, Redis caching, database optimization, monitoring** |
+| **21** | **Real-time Features (WebSocket Notifications)** | **Live notifications, dashboard updates, collaborative indicators** |
 
 #  **✅ Stage 0: Prerequisites Setup (Cursor-Compatible)**
 
